@@ -1,0 +1,6 @@
+---
+- name: Install Bor
+  hosts: all
+  roles:
+    - role: roles/install-dependencies
+    - role: roles/install-bor

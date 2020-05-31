@@ -1,0 +1,19 @@
+---
+- name: Setup prometheus exporters
+  hosts: all
+  tasks:
+    - name: Node exporter
+      include_role:
+        name: roles/node-exporter
+        apply:
+          tags: always
+      tags:
+        - install
+
+    - name: Process exporter
+      include_role:
+        name: roles/process-exporter
+        apply:
+          tags: always
+      tags:
+        - install

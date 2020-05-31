@@ -1,0 +1,35 @@
+---
+- name: Mainnet node management
+  hosts: all
+  tasks:
+    - name: Install dependencies
+      include_role:
+        name: roles/install-dependencies
+        apply:
+          tags: always
+      tags:
+        - install_dependencies
+
+    - name: Build Heimdall
+      include_role:
+        name: roles/install-heimdall
+        apply:
+          tags: always
+      tags:
+        - build
+
+    - name: Build Bor
+      include_role:
+        name: roles/install-bor
+        apply:
+          tags: always
+      tags:
+        - build
+
+    - name: Setup and deploy mainnet
+      include_role:
+        name: roles/setup-mainnet
+        apply:
+          tags: always
+      tags:
+        - deploy

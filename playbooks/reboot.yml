@@ -1,0 +1,7 @@
+---
+- name: Reboot machines
+  hosts: all
+  tasks:
+    - name: Reboot
+      reboot:
+      become: true

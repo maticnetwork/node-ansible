@@ -1,0 +1,31 @@
+---
+# Tasks to setup mainnet
+
+- name: Fetch node files
+  git:
+    repo: "https://{{ mainnet_launch_repository }}.git"
+    dest: "{{ ansible_env.HOME }}/launch"
+    recursive: false
+    version: "{{ mainnet_launch_branch }}"
+
+- name: Setup node directory
+  command: cp -rf {{ ansible_env.HOME }}/launch/{{ mainnet_version }}/{{ node_type }} {{ ansible_env.HOME }}/node
+
+- name: Setup Heidmall
+  command: "chdir={{ ansible_env.HOME }}/node/heimdall {{ item }}"
+  with_items:
+    - bash setup.sh
+  tags:
+    - heimdall
+
+- name: Setup Bor
+  command: "chdir={{ ansible_env.HOME }}/node/bor {{ item }}"
+  with_items:
+    - bash setup.sh
+  tags:
+    - bor
+
+- name: Generate service files
+  command: "chdir={{ ansible_env.HOME }}/launch/{{ mainnet_version }} {{ item }}"
+  with_items:
+    - bash service.sh

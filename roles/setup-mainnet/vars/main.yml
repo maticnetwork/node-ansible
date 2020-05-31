@@ -1,0 +1,12 @@
+---
+# vars file for roles/setup-mainnet
+
+# repository
+mainnet_launch_repository: github.com/maticnetwork/launch
+# branch
+mainnet_launch_branch: master
+# version
+mainnet_version: mainnet-v1
+# node type
+# options: sentry/sentry, sentry/validator, without-sentry
+node_type: sentry/sentry

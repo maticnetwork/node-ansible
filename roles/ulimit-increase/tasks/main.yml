@@ -1,0 +1,28 @@
+---
+# tasks file for ulimit_increase
+
+- name: Add file-max limit in sysctl.conf file
+  blockinfile: 
+    state: present
+    insertafter: EOF
+    dest: /etc/sysctl.conf 
+    content: |
+      fs.file-max = 65536
+  become: true
+
+- name: Add limits limits.conf file
+  blockinfile: 
+    state: present
+    insertafter: EOF
+    dest: /etc/security/limits.conf
+    content: |
+      *  soft nproc  65535
+      *  hard nproc  65535
+      *  soft nofile 65535
+      *  hard nofile 65535
+  become: true
+
+- name: Rebooting the machine to apply the ulimit changes
+  reboot:
+  become: true
+

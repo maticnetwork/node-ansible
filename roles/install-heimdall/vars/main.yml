@@ -1,0 +1,4 @@
+---
+# vars file for heimdall
+
+heimdall_branch: master

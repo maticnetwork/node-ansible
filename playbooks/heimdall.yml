@@ -1,0 +1,6 @@
+---
+- name: Install Heimdall
+  hosts: all
+  roles:
+    - role: roles/install-dependencies
+    - role: roles/install-heimdall

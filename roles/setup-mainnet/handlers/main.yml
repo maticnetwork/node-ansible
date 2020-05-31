@@ -1,0 +1,64 @@
+---
+# reload handlers
+
+- name: reload heimdalld
+  systemd:
+    name: heimdalld
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+- name: reload heimdalld-rest-server
+  systemd:
+    name: heimdalld-rest-server
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+- name: reload heimdalld-bridge
+  systemd:
+    name: heimdalld-bridge
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+- name: reload bor
+  systemd:
+    name: bor
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+# restart handlers
+
+- name: restart heimdalld
+  service:
+    name: heimdalld
+    state: restarted
+  listen:
+    - "restart devnet services"
+    - "restart heimdall services"
+
+- name: restart heimdalld-rest-server
+  service:
+    name: heimdalld-rest-server
+    state: restarted
+  listen:
+    - "restart devnet services"
+    - "restart heimdall services"
+
+- name: restart heimdalld-bridge
+  service:
+    name: heimdalld-bridge
+    state: restarted
+  listen:
+    - "restart devnet services"
+    - "restart heimdall services"
+
+- name: restart bor
+  service:
+    name: bor
+    state: restarted
+  listen:
+    - "restart devnet services"
+    - "restart bor services"

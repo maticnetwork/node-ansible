@@ -1,0 +1,41 @@
+---
+# tasks file for install_dependencies
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Copy install_dependencies.sh file
+  copy:
+    src: install_dependencies.sh
+    dest: "{{ ansible_env.HOME }}"
+    owner: ubuntu
+    group: ubuntu
+    mode: "0777"
+
+- name: Installing golang
+  command: sh {{ ansible_env.HOME }}/install_dependencies.sh
+  args:
+    creates: "{{ ansible_env.HOME }}/.go"
+
+- name: Creating symlink for golang
+  file:
+    src: "{{ ansible_env.HOME }}/.go/bin/go"
+    dest: "/usr/bin/go"
+    state: link
+  become: true
+
+- name: Install build-essential
+  action: apt pkg=build-essential
+  become: true
+
+- name: Install jq
+  action: apt pkg=jq
+  become: true
+
+- name: Install rabbitmq-server
+  apt:
+    name: rabbitmq-server
+    state: present
+  become: true

@@ -1,0 +1,6 @@
+---
+# tasks file for roles/setup-devnet
+
+- include_tasks: check.yml
+- include_tasks: setup.yml
+- include_tasks: service.yml

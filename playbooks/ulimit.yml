@@ -1,0 +1,5 @@
+---
+- name: Increase ulimit
+  hosts: all
+  roles:
+    - role: roles/ulimit-increase

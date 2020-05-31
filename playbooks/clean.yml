@@ -1,0 +1,33 @@
+---
+- name: Clean node and data directory
+  hosts: all
+  tasks:
+    - name: Clean launch directory
+      file:
+        path: "{{ ansible_env.HOME }}/launch"
+        state: absent
+      tags:
+        - clean
+
+    - name: Clean node directory
+      file:
+        path: "{{ ansible_env.HOME }}/node"
+        state: absent
+      tags:
+        - clean
+
+    - name: Clean Heimdall home directory
+      file:
+        path: "{{ ansible_env.HOME }}/.heimdalld"
+        state: absent
+      tags:
+        - heimdall
+        - clean
+
+    - name: Clean Bor home directory
+      file:
+        path: "{{ ansible_env.HOME }}/.bor"
+        state: absent
+      tags:
+        - bor
+        - clean

@@ -1,0 +1,44 @@
+---
+- name: Download binary of node-exporter
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: Unarchive tar
+  unarchive:
+    src: /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Move node-exporter binary
+  command: mv /tmp/node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+  become: yes
+
+- name: Chown node-exporter
+  file:
+    path: /usr/local/bin/node_exporter
+    mode: "755"
+  become: true
+
+- name: Delete tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
+    - /tmp/node_exporter-0.18.1.linux-amd64
+
+- name: Setup node exporter service
+  copy:
+    src: node-exporter.service
+    dest: /etc/systemd/system/node-exporter.service
+    mode: "755"
+  notify:
+    - reload node-exporter
+  become: true
+
+- name: restart node-exporter
+  service:
+    name: node-exporter
+    state: restarted
+  become: yes

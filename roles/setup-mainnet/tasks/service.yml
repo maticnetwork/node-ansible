@@ -1,0 +1,46 @@
+---
+# Tasks to setup services
+
+- name: Setup Heimdall service
+  copy:
+    src: "{{ ansible_env.HOME }}/launch/{{ mainnet_version }}/heimdalld.service"
+    dest: /etc/systemd/system/heimdalld.service
+    mode: "0755"
+    remote_src: true
+  notify: reload heimdalld
+  become: true
+  tags:
+    - heimdall
+
+- name: Setup Heimdall rest service
+  copy:
+    src: "{{ ansible_env.HOME }}/launch/{{ mainnet_version }}/heimdalld-rest-server.service"
+    dest: /etc/systemd/system/heimdalld-rest-server.service
+    mode: "0755"
+    remote_src: true
+  notify: reload heimdalld-rest-server
+  become: true
+  tags:
+    - heimdall
+
+- name: Setup Heimdall bridge service
+  copy:
+    src: "{{ ansible_env.HOME }}/launch/{{ mainnet_version }}/heimdalld-bridge.service"
+    dest: /etc/systemd/system/heimdalld-bridge.service
+    mode: "0755"
+    remote_src: true
+  notify: reload heimdalld-bridge
+  become: true
+  tags:
+    - heimdall
+
+- name: Setup Bor service
+  copy:
+    src: "{{ ansible_env.HOME }}/launch/{{ mainnet_version }}/bor.service"
+    dest: /etc/systemd/system/bor.service
+    mode: "0755"
+    remote_src: true
+  notify: reload bor
+  become: true
+  tags:
+    - bor

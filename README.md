@@ -1,4 +1,6 @@
-# Ansible
+# Node Ansible
+
+Ansible scripts to setup Matic validator node
 
 ### Setup
 

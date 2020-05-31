@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus process exporter 
+
+[Service]
+User=root
+Type=simple
+ExecStart=/usr/bin/process-exporter --config.path /etc/process-exporter/all.yaml --web.listen-address=:9256
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

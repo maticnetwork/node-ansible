@@ -1,0 +1,59 @@
+---
+# tasks file for process-exporter
+- name: Make directory
+  file:
+    path: /etc/process-exporter
+    state: directory
+    mode: "775"
+  become: yes
+
+- name: Copy config
+  copy:
+    src: all.yaml
+    dest: /etc/process-exporter
+    mode: "644"
+  become: yes
+
+- name: Copy the binary of process-exporter
+  get_url:
+    url: https://github.com/ncabatoff/process-exporter/releases/download/v0.6.0/process-exporter-0.6.0.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: Download and unarchive tar
+  unarchive:
+    src: /tmp/process-exporter-0.6.0.linux-amd64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Move process-exporter binary
+  command: mv /tmp/process-exporter-0.6.0.linux-amd64/process-exporter /usr/bin/
+  become: yes
+
+- name: Chown process-exporter
+  file:
+    path: /usr/bin/process-exporter
+    mode: "755"
+  become: yes
+
+- name: Delete tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/process-exporter-0.6.0.linux-amd64.tar.gz
+    - /tmp/process-exporter-0.6.0.linux-amd64
+
+- name: Setup process exporter service
+  copy:
+    src: process-exporter.service
+    dest: /etc/systemd/system/process-exporter.service
+    mode: "755"
+  notify:
+    - reload process-exporter
+  become: true
+
+- name: restart process-exporter
+  service:
+    name: process-exporter
+    state: restarted
+  become: yes

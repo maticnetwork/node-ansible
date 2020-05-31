@@ -1,0 +1,17 @@
+---
+# reload handlers
+
+- name: reload process-exporter
+  systemd:
+    name: process-exporter
+    enabled: yes
+    daemon_reload: yes
+  become: yes
+
+# restart handlers
+
+- name: restart process-exporter
+  service:
+    name: process-exporter
+    state: restarted
+  become: yes

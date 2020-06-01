@@ -4,16 +4,20 @@ Ansible scripts to setup Matic validator node
 
 ### Setup
 
-**Copy `pem` private key file as `.workspace/private.pem`** to enable ssh through ansible.
+Note: If your ssh public key (`~/.ssh/id_rsa.pub`) is already on the remote machines, skip this step.
+
+**Copy `pem` private key file as `.workspace/private.pem`** to enable ssh through ansible. If you don't have pem file, just make sure you can reach remote machines from your own machine using ssh (`ssh <username>@ip`). 
 
 ### Inventory
 
-Add hosts into `inventory.yml` under appropriate heads.
-
-Available inventory group names:
+Ansible manages hosts using `inventory.yml` file. Current setup has two group names:
 
 * `sentry`
 * `validator`
+
+Each group may have multiple IPs (hosts). Each Ansible command needs group name to be mentioned. Ansible runs the playbook on mentioned group's machines. Note that if you don't mention group name, Ansible will run playbook on all machines.
+
+**Setup inventory**
 
 Add sentry nodes IPs/hosts under the `sentry` group and add validator node's IP/host under `validator` group. 
 

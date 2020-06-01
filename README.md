@@ -114,6 +114,8 @@ ansible-playbook -l <group-name> playbooks/ulimit.yml
 ansible-playbook -l <group-name> playbooks/setup-exporters.yml
 ```
 
+This will install node and process exporter on machines for prometheus monitoring. Both exporters will be available at default ports.
+
 **To reboot machine**
 
 ```bash

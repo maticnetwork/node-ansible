@@ -1,6 +1,6 @@
 # Node Ansible
 
-Ansible scripts to setup Matic validator node
+Ansible playbooks to setup Matic validator node
 
 ### Setup
 

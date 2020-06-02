@@ -6,28 +6,30 @@
     update_cache: yes
   become: true
 
-- name: Copy install_dependencies.sh file
-  copy:
-    src: install_dependencies.sh
-    dest: "{{ ansible_env.HOME }}"
-    owner: ubuntu
-    group: ubuntu
-    mode: "0777"
+- name: Install build-essential
+  action: apt pkg=build-essential
+  become: true
 
-- name: Installing golang
-  command: sh {{ ansible_env.HOME }}/install_dependencies.sh
+- name: Download go installer
+  get_url:
+    url: https://gist.githubusercontent.com/jdkanani/e18e14910652ad829fad994e4b89f0b9/raw/77b3cb2541e3ebe8d9ae3427a6f8a52d7f310b6f/go-install.sh
+    dest: "{{ ansible_env.HOME }}/go-install.sh"
+
+- name: Execute the go-install.sh
+  command: "bash go-install.sh"
   args:
-    creates: "{{ ansible_env.HOME }}/.go"
+    chdir: "{{ ansible_env.HOME }}"
+
+- name: Remove the go-install.sh
+  file:
+    path: "{{ ansible_env.HOME }}/go-install.sh"
+    state: absent
 
 - name: Creating symlink for golang
   file:
     src: "{{ ansible_env.HOME }}/.go/bin/go"
     dest: "/usr/bin/go"
     state: link
-  become: true
-
-- name: Install build-essential
-  action: apt pkg=build-essential
   become: true
 
 - name: Install jq

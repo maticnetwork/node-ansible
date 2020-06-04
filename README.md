@@ -1,6 +1,10 @@
 # Node Ansible
 
-Ansible playbooks to setup Matic validator node
+Ansible playbooks to setup Matic validator node.
+
+### Requirements
+
+Make sure you are using python3.x with Ansible. To check: `ansible --version` 
 
 ### Setup
 

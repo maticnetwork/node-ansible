@@ -1,5 +1,5 @@
 ---
-- name: Mainnet node management
+- name: Network node management
   hosts: all
   tasks:
     - name: Install dependencies
@@ -26,9 +26,9 @@
       tags:
         - build
 
-    - name: Setup and deploy mainnet
+    - name: Setup and deploy network
       include_role:
-        name: roles/setup-mainnet
+        name: roles/setup-network
         apply:
           tags: always
       tags:

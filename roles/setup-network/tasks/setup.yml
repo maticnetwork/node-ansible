@@ -1,15 +1,15 @@
 ---
-# Tasks to setup mainnet
+# Tasks to setup network
 
 - name: Fetch node files
   git:
-    repo: "https://{{ mainnet_launch_repository }}.git"
+    repo: "https://{{ network_launch_repository }}.git"
     dest: "{{ ansible_env.HOME }}/launch"
     recursive: false
-    version: "{{ mainnet_launch_branch }}"
+    version: "{{ network_launch_branch }}"
 
 - name: Setup node directory
-  command: cp -rf {{ ansible_env.HOME }}/launch/{{ mainnet_version }}/{{ node_type }} {{ ansible_env.HOME }}/node
+  command: cp -rf {{ ansible_env.HOME }}/launch/{{ network_version }}/{{ node_type }} {{ ansible_env.HOME }}/node
 
 - name: Setup Heidmall
   command: "chdir={{ ansible_env.HOME }}/node/heimdall {{ item }}"
@@ -26,6 +26,6 @@
     - bor
 
 - name: Generate service files
-  command: "chdir={{ ansible_env.HOME }}/launch/{{ mainnet_version }} {{ item }}"
+  command: "chdir={{ ansible_env.HOME }}/launch/{{ network_version }} {{ item }}"
   with_items:
     - bash service.sh

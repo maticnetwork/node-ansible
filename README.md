@@ -50,6 +50,15 @@ ansible sentry -m ping
 ansible validator -m ping
 ```
 
+### Networks
+
+There are two networks available:
+
+* `mainnet-v1` (Mainnet v1)
+* `testnet-v4` (Mumbai testnet)
+
+While running Ansible playbook, `network_version` needs to be set.
+
 ### Sentry node setup
 
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):

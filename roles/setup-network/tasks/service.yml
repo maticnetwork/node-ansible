@@ -44,3 +44,23 @@
   become: true
   tags:
     - bor
+
+- name: Create /etc/matic directory
+  file:
+    path: /etc/matic
+    state: directory
+  become: true
+
+- name: Check if metadata exists
+  stat:
+    path: /etc/matic/metadata
+  register: metadata_to_check
+
+- name: Setup metadata file
+  copy:
+    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/metadata"
+    dest: /etc/matic/metadata
+    mode: "0755"
+    remote_src: true
+  become: true
+  when: metadata_to_check.stat.exists == False

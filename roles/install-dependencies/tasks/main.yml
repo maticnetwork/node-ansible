@@ -12,7 +12,7 @@
 
 - name: Download go installer
   get_url:
-    url: https://gist.githubusercontent.com/jdkanani/e18e14910652ad829fad994e4b89f0b9/raw/77b3cb2541e3ebe8d9ae3427a6f8a52d7f310b6f/go-install.sh
+    url: https://gist.githubusercontent.com/jdkanani/e18e14910652ad829fad994e4b89f0b9/raw/aecdd859f568848083b4db6cc1ee2bc1b8090ed3/go-install.sh
     dest: "{{ ansible_env.HOME }}/go-install.sh"
 
 - name: Execute the go-install.sh

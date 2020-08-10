@@ -109,6 +109,8 @@ To check the sync status you can run the follwing command on your node
 $ curl http://localhost:26657/status
 ```
 
+The key called `catching_up` will show your sync status, if it's not catching up it means that you are fully synced!
+
 ### Management commands
 
 **To clean deployed setup (warning: this will delete all blockchain data)**

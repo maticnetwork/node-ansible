@@ -40,6 +40,8 @@ all:
         xxx.xxx.xx.xx: # <----- Add IP for validator node
 ```
 
+Note: By default the user to login is setup as ubuntu in `group_vars/all` file. If you have a specific user to be logged in with please change the username in this file.
+
 To check if nodes are reachable, run following commands:
 
 ```bash

@@ -40,6 +40,8 @@ all:
         xxx.xxx.xx.xx: # <----- Add IP for validator node
 ```
 
+Note: By default the user to login is setup as ubuntu in `group_vars/all` file. If you have a specific user to be logged in with please change the username in this file.
+
 To check if nodes are reachable, run following commands:
 
 ```bash
@@ -100,6 +102,16 @@ To run actual playbook on validator node:
 ```bash
 ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.0 heimdall_branch=v0.2.0 network_version=mainnet-v1 node_type=without-sentry"
 ```
+
+### Check sync status
+
+To check the sync status you can run the follwing command on your node
+
+```js
+$ curl http://localhost:26657/status
+```
+
+The key called `catching_up` will show your sync status, if it's not catching up it means that you are fully synced!
 
 ### Management commands
 

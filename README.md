@@ -101,6 +101,14 @@ To run actual playbook on validator node:
 ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.0 heimdall_branch=v0.2.0 network_version=mainnet-v1 node_type=without-sentry"
 ```
 
+### Check sync status
+
+To check the sync status you can run the follwing command on your node
+
+```js
+$ curl http://localhost:26657/status
+```
+
 ### Management commands
 
 **To clean deployed setup (warning: this will delete all blockchain data)**

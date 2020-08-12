@@ -1,17 +1,17 @@
 ---
 - name: Download binary of node-exporter
   get_url:
-    url: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
     dest: /tmp
 
 - name: Unarchive tar
   unarchive:
-    src: /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
+    src: /tmp/node_exporter-1.0.1.linux-amd64.tar.gz
     dest: /tmp
     remote_src: yes
 
 - name: Move node-exporter binary
-  command: mv /tmp/node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+  command: mv /tmp/node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/
   become: yes
 
 - name: Chown node-exporter
@@ -25,8 +25,8 @@
     path: "{{ item }}"
     state: absent
   with_items:
-    - /tmp/node_exporter-0.18.1.linux-amd64.tar.gz
-    - /tmp/node_exporter-0.18.1.linux-amd64
+    - /tmp/node_exporter-1.0.1.linux-amd64.tar.gz
+    - /tmp/node_exporter-1.0.1.linux-amd64
 
 - name: Setup node exporter service
   copy:

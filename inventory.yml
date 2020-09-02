@@ -1,9 +1,10 @@
 all:
+
   hosts:
   children:
     sentry:
       hosts:
-        # <ip-address>:
+       :
     validator:
       hosts:
-        # <ip-address>:
+        :

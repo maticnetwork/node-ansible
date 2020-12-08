@@ -10,6 +10,11 @@
   action: apt pkg=build-essential
   become: true
 
+- name: Remove old go bin directory
+  file:
+    path: "{{ ansible_env.HOME }}/.go"
+    state: absent
+
 - name: Download go installer
   get_url:
     url: https://gist.githubusercontent.com/jdkanani/e18e14910652ad829fad994e4b89f0b9/raw/036bec312799cec8589360d0d939cc5ec0e7f719/go-install.sh

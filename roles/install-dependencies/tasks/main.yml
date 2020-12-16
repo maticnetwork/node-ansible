@@ -40,6 +40,10 @@
 - name: Install jq
   action: apt pkg=jq
   become: true
+  
+- name: Install git
+  action: apt pkg=git
+  become: true
 
 - name: Install rabbitmq-server
   apt:

@@ -10,6 +10,7 @@
 
 - name: Build Bor
   command: chdir={{ ansible_env.HOME }}/bor make bor-all
+
 - name: Creating symlink for bor
   file:
     src: "{{ ansible_env.HOME }}/bor/build/bin/bor"

@@ -50,3 +50,16 @@
     name: rabbitmq-server
     state: present
   become: true
+
+- name: Install lz4 compression lib
+  apt:
+    name: liblz4-tool
+    state: present
+  become: true
+
+- name: Install sysstat to collect system stats
+  apt:
+    name: sysstat
+    state: present
+  become: true
+

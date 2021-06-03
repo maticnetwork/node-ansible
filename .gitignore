@@ -1,3 +1,4 @@
 .workspace
 bin/
+lib/
 Pip*

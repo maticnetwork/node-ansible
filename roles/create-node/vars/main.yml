@@ -1,0 +1,13 @@
+
+hosts: localhost
+ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
+aws_region: us-east-1
+ami_id:  ami-08353a25e80beea3e
+key_pair_name: mainnet-v1-1
+instance_type: c6g.2xlarge
+vpc_subnet_id: subnet-0005da7e9fcaadc2f
+vpc_security_group: ['sg-059eabfac893689b9', 'sg-05c01fefc864dc033']
+vpc_id: vpc-0847446444f62986b
+instance_iam_role: EC2SSM
+count: 1
+private_key_file: ~/.ssh/id_rsa

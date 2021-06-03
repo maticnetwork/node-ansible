@@ -1,0 +1,9 @@
+
+#how to run this
+#ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1  playbooks/make_node.yml
+
+- name: Create Sentry nodes
+  hosts: localhost
+  connection: local 
+  roles:
+    - role: roles/create-node

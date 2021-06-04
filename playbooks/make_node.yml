@@ -2,36 +2,27 @@
 #how to run this
 #ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1  playbooks/make_node.yml
 
-# - name: Create Sentry nodes
-#   hosts: localhost
-#   connection: local 
-#   roles:
-#     - role: roles/create-node
 
-- name: Install Bor
+- name: Create Sentry node
   hosts: localhost
+  connection: local 
+  tasks:
+    - name: Make a new node
+      include_role:
+        name: roles/create-node
+        apply:
+          tags: always
+      tags:
+        - create_node
 
-  roles:
-    - role: roles/create-node
-    - role: roles/install-dependencies
-#     - role: roles/install-bor
-
-
-# - name: Create Sentry node
-#   hosts: localhost
-#   connection: local 
-#   tasks:
-#     - name: Make a new node
-#       include_role:
-#         name: roles/create-node
-#         apply:
-#           tags: always
-#       tags:
-#         - create_node
+    - name: add new node into runtime inventory
+      add_host:
+        name: remote-host 
+        groups: web
+        ansible_host: "{{public_ip}}"
 
 # - name: Network node management
-#   hosts: localhost
-#   connection: local
+#   hosts: remote_host
 #   tasks:
 #     - name: Install dependencies
 #       include_role:
@@ -40,6 +31,45 @@
 #           tags: always
 #       tags:
 #         - install_dependencies
+
+
+# - name: Check Hosts
+#   hosts: remote-host
+#   tasks:
+#       - name: print info
+#         debug:
+#           msg: "Host full name is {{ inventory_hostname }}. Short name is {{ inventory_hostname_short }}"
+#       - name: loop debug items
+#         debug: 
+#           msg: "the docker host is {{ hostvars[item].as}}"
+#         with_items: "{{ groups['web'] }}"
+
+- name: test
+  hosts: remote-host
+  remote_user: ubuntu
+  become: yes
+  vars:
+    ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
+  tasks:
+    - name: Install Ngeinx
+      package:
+        name: nginx
+        state: present
+
+
+- name: Install Heimdall
+  hosts: remote-host
+  remote_user: ubuntu
+
+  roles:
+    - role: roles/install-dependencies
+    - role: roles/install-heimdall
+  # tasks:
+  #     - name: print info
+  #       debug:
+  #         msg: "Host full name is {{ inventory_hostname }}. Short name is {{ inventory_hostname_short }}"
+
+
 
 # - name: Attach EBS
 #   hosts: localhost

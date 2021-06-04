@@ -2,3 +2,4 @@
 # vars file for heimdall
 
 heimdall_branch: master
+ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3

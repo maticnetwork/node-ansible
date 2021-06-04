@@ -21,35 +21,16 @@
         groups: web
         ansible_host: "{{public_ip}}"
 
-# - name: Network node management
-#   hosts: remote_host
-#   tasks:
-#     - name: Install dependencies
-#       include_role:
-#         name: roles/install-dependencies
-#         apply:
-#           tags: always
-#       tags:
-#         - install_dependencies
-
-
-# - name: Check Hosts
-#   hosts: remote-host
-#   tasks:
-#       - name: print info
-#         debug:
-#           msg: "Host full name is {{ inventory_hostname }}. Short name is {{ inventory_hostname_short }}"
-#       - name: loop debug items
-#         debug: 
-#           msg: "the docker host is {{ hostvars[item].as}}"
-#         with_items: "{{ groups['web'] }}"
-
 - name: test
   hosts: remote-host
   remote_user: ubuntu
-  become: yes
+  become: true
   vars:
-    ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
+    # ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
+    ansible_ssh_private_key_file: ~/Downloads/PemFiles/mainnet-v1-1.pem
+    ansible_connection: ssh
+    ansible_ssh_user: ubuntu
+
   tasks:
     - name: Install Ngeinx
       package:
@@ -60,6 +41,7 @@
 - name: Install Heimdall
   hosts: remote-host
   remote_user: ubuntu
+  become: true
 
   roles:
     - role: roles/install-dependencies

@@ -4,57 +4,6 @@
 
 
 
-
-##ansible-galaxy collection install ansible.posix
-
-
-# # Gather information about any snapshot with a tag key Name and value Example
-# - name: Find Latest snaphosts of Lifecycle manager of heimdall and Bor
-#   amazon.aws.ec2_snapshot_info:
-#     filters:
-#       "tag:aws:dlm:lifecycle-policy-id": "policy-00f28df71a5a30952"
-#   register: snapshot_ids
-
-# - debug:
-#     msg: "{{snapshot_ids}}"
-
-# - debug:
-#     msg: "{{snapshot_ids.snapshots[0].snapshot_id}}"
-
-
-
-- name: Filter Latest snaphosts of heimdall
-  amazon.aws.ec2_snapshot_info:
-    filters:
-      "tag:aws:dlm:lifecycle-policy-id": "policy-00f28df71a5a30952"
-      "tag:VolumeType": "heimdall"
-      "tag:Network": "{{network}}"
-  register: heimdall_snapshot_ids
-
-- name: Filter Latest snaphosts of heimdall and Bor
-  amazon.aws.ec2_snapshot_info:
-    filters:
-      "tag:aws:dlm:lifecycle-policy-id": "policy-00f28df71a5a30952"
-      "tag:VolumeType": "bor"
-      "tag:Network": "{{network}}"
-  register: bor_snapshot_ids
-
-- set_fact:
-    heimdall_snapshot_id: "{{heimdall_snapshot_ids.snapshots[0].snapshot_id}}"  
-
-
-
-- set_fact:
-    bor_snapshot_id: "{{bor_snapshot_ids.snapshots[0].snapshot_id}}"  
-
-
-- debug:
-    msg: "{{heimdall_snapshot_id}}"
-
-- debug:
-    msg: "{{bor_snapshot_id}}"
-
-
 - name: Creating a Sentry Node
   community.aws.ec2_instance:
     name: "{{name}}"
@@ -86,57 +35,12 @@
 - set_fact: 
     instance_id: "{{instance.instance_ids[0]}}"
 
-- debug: 
-    var: instance_id
+
+- set_fact:
+    public_ip: "{{instance.instances[0].public_ip_address}}"
 
 
 
-- name: Create a new heimdall Volume
-  amazon.aws.ec2_vol:
-    name: "{{name}}-heimdall"
-    instance: "{{instance_id}}"
-    snapshot: "{{heimdall_snapshot_id}}"
-    device_name: /dev/sdg
-    state: present
-    volume_type : gp3
-    tags: 
-      VolumeType: "heimdall"
-
-- name: Create a new Bor Volume
-  amazon.aws.ec2_vol:
-    name: "{{name}}-bor"
-    instance: "{{instance_id}}"
-    snapshot: "{{bor_snapshot_id}}"
-    device_name: /dev/sdf
-    state: present
-    volume_type : gp3
-    tags: 
-      VolumeType: "bor"
-
-# ##mount volumes
-# - name: 
-#   mount: name=/home/ubuntu/.heimdalld/data fstype=ext4 state=mounted src=/dev/sdg
-#   mount: name=/home/ubuntu/.bor/data/bor/chaindata fstype=ext4 state=mounted src=/dev/sdf
-#   become: yes
-#   su: true
-
-- name: Mounting the Heimdall volume
-  ansible.posix.mount:
-    path: /home/ubuntu/.heimdalld/data
-    src: /dev/sdg
-    fstype: ext4
-    state: present
-    backup: yes
-  become: true
-  become_user: ubuntu
 
 
-- name: Mounting the Bor volume
-  ansible.posix.mount:
-    path: /home/ubuntu/.bor/data/bor/chaindata
-    src: /dev/sdf
-    fstype: ext4
-    state: present
-    backup: yes
-  become: true
-  become_user: ubuntu
+

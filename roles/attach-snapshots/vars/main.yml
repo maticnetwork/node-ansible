@@ -1,0 +1,5 @@
+
+ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
+aws_region: us-east-1
+private_key_file: ~/.ssh/id_rsa
+instance_id: i-0b3c2d91c40d78d92

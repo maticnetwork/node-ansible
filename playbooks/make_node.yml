@@ -2,8 +2,93 @@
 #how to run this
 #ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1  playbooks/make_node.yml
 
-- name: Create Sentry nodes
+# - name: Create Sentry nodes
+#   hosts: localhost
+#   connection: local 
+#   roles:
+#     - role: roles/create-node
+
+- name: Install Bor
   hosts: localhost
-  connection: local 
+
   roles:
     - role: roles/create-node
+    - role: roles/install-dependencies
+#     - role: roles/install-bor
+
+
+# - name: Create Sentry node
+#   hosts: localhost
+#   connection: local 
+#   tasks:
+#     - name: Make a new node
+#       include_role:
+#         name: roles/create-node
+#         apply:
+#           tags: always
+#       tags:
+#         - create_node
+
+# - name: Network node management
+#   hosts: localhost
+#   connection: local
+#   tasks:
+#     - name: Install dependencies
+#       include_role:
+#         name: roles/install-dependencies
+#         apply:
+#           tags: always
+#       tags:
+#         - install_dependencies
+
+# - name: Attach EBS
+#   hosts: localhost
+#   connection: local 
+#   tasks:
+#     - name: Attch ebs
+#       include_role:
+#         name: roles/attach-snapshots
+#         apply:
+#           tags: always
+#       tags:
+#         - snapshots
+
+
+
+
+# - name: run playbook playbook2
+#   import_playbook: network.yml
+#   vars:
+#     hosts: "{{public_ip}}"
+
+    # - name: Install dependencies
+    #   include_role:
+    #     name: roles/install-dependencies
+    #     apply:
+    #       tags: always
+    #   tags:
+    #     - install_dependencies
+
+    # - name: Build Heimdall
+    #   include_role:
+    #     name: roles/install-heimdall
+    #     apply:
+    #       tags: always
+    #   tags:
+    #     - build
+
+    # - name: Build Bor
+    #   include_role:
+    #     name: roles/install-bor
+    #     apply:
+    #       tags: always
+    #   tags:
+    #     - build
+
+    # - name: Setup and deploy network
+    #   include_role:
+    #     name: roles/setup-network
+    #     apply:
+    #       tags: always
+    #   tags:
+    #     - deploy

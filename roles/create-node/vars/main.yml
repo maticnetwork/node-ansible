@@ -1,5 +1,4 @@
 
-hosts: localhost
 ansible_python_interpreter: /home/graphicaldot/Programs/Matic/node-ansible/bin/python3
 aws_region: us-east-1
 ami_id:  ami-08353a25e80beea3e

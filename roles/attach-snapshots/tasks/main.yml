@@ -1,0 +1,88 @@
+
+
+- ec2_instance_facts:
+    instance_ids:
+      - "{{instance_id}}"
+  register: instance
+
+
+- debug: 
+    msg: "{{instance}}" 
+
+- name: Filter Latest snaphosts of heimdall
+  amazon.aws.ec2_snapshot_info:
+    filters:
+      "tag:aws:dlm:lifecycle-policy-id": "policy-00f28df71a5a30952"
+      "tag:VolumeType": "heimdall"
+      "tag:Network": "{{network}}"
+  register: heimdall_snapshot_ids
+
+- name: Filter Latest snaphosts of heimdall and Bor
+  amazon.aws.ec2_snapshot_info:
+    filters:
+      "tag:aws:dlm:lifecycle-policy-id": "policy-00f28df71a5a30952"
+      "tag:VolumeType": "bor"
+      "tag:Network": "{{network}}"
+  register: bor_snapshot_ids
+
+- set_fact:
+    heimdall_snapshot_id: "{{heimdall_snapshot_ids.snapshots[0].snapshot_id}}"  
+
+
+
+- set_fact:
+    bor_snapshot_id: "{{bor_snapshot_ids.snapshots[0].snapshot_id}}"  
+
+
+- debug:
+    msg: "{{heimdall_snapshot_id}}"
+
+- debug:
+    msg: "{{bor_snapshot_id}}"
+
+
+
+- name: Create a new heimdall Volume
+  amazon.aws.ec2_vol:
+    name: "{{name}}-heimdall"
+    instance: "{{instance_id}}"
+    snapshot: "{{heimdall_snapshot_id}}"
+    device_name: /dev/sdg
+    state: present
+    volume_type : gp3
+    tags: 
+      VolumeType: "heimdall"
+
+- name: Create a new Bor Volume
+  amazon.aws.ec2_vol:
+    name: "{{name}}-bor"
+    instance: "{{instance_id}}"
+    snapshot: "{{bor_snapshot_id}}"
+    device_name: /dev/sdf
+    state: present
+    volume_type : gp3
+    tags: 
+      VolumeType: "bor"
+
+
+
+- name: Mounting the Heimdall volume
+  ansible.posix.mount:
+    path: /home/ubuntu/.heimdalld/data
+    src: /dev/sdg
+    fstype: ext4
+    state: mounted
+    backup: yes
+  # become: yes
+  # become_user: ubuntu
+
+
+- name: Mounting the Bor volume
+  ansible.posix.mount:
+    path: /home/ubuntu/.bor/data/bor/chaindata
+    src: /dev/sdf
+    fstype: ext4
+    state: mounted
+    backup: yes
+  # become: true
+  # become_user: ubuntu

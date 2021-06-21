@@ -100,7 +100,7 @@ ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2
 To run actual playbook on validator node:
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.3 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=without-sentry"
+ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=without-sentry"
 ```
 
 ### Check sync status
@@ -164,13 +164,13 @@ ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.0-mainnet-1d8
 **To setup Bor**
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.3" playbooks/bor.yml
+ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.6" playbooks/bor.yml
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.3" playbooks/bor.yml --list-hosts
+ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.6" playbooks/bor.yml --list-hosts
 ```
 
 ### Adhoc queries

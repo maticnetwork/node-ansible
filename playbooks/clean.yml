@@ -67,10 +67,3 @@
         path: "/usr/bin/heimdallcli"
         state: absent
       become: true
-
-
-
- 
-
-
-

@@ -1,1 +1,4 @@
 .workspace
+bin/
+lib/
+

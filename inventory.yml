@@ -1,0 +1,10 @@
+all:
+
+  hosts:
+  children:
+    sentry:
+      hosts:
+       :
+    validator:
+      hosts:
+        :

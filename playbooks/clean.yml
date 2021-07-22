@@ -31,3 +31,46 @@
       tags:
         - bor
         - clean
+
+    - name: Remove heimdall symlink
+      file:
+        path: "/usr/bin/heimdalld"
+        state: absent
+      become: true
+
+    - name: Remove bridge symlink
+      file:
+        path: "/usr/bin/bridge"
+        state: absent
+      become: true
+
+    - name: Remove bridge symlink
+      file:
+        path: "/usr/bin/bridge"
+        state: absent
+      become: true
+
+    - name: Remove bor symlink
+      file:
+        path: "/usr/bin/bor"
+        state: absent
+      become: true
+
+    - name: Remove bootnode symlink
+      file:
+        path: "/usr/bin/bootnode"
+        state: absent
+      become: true
+
+    - name: Remove heimdallcli symlink
+      file:
+        path: "/usr/bin/heimdallcli"
+        state: absent
+      become: true
+
+
+
+ 
+
+
+

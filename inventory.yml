@@ -4,7 +4,7 @@ all:
   children:
     sentry:
       hosts:
-       :
+       54.243.206.185:
     validator:
       hosts:
-        :
+        1.1.1.1:

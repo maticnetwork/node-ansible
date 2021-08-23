@@ -71,13 +71,13 @@ Similarly for `heimdall_network` following options can be used
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet" --list-hosts
+ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet" --list-hosts
 ```
 
 To run actual playbook on sentry nodes:
 
 ```bash
-ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
 ```
 
 ### Validator node setup (with sentry)
@@ -85,13 +85,13 @@ ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.1 
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet" --list-hosts
+ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet" --list-hosts
 ```
 
 To run actual playbook on validator node:
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet"
+ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet"
 ```
 
 ### Validator node setup (with-out sentry)
@@ -99,13 +99,13 @@ ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet" --list-hosts
+ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet" --list-hosts
 ```
 
 To run actual playbook on validator node:
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.1 heimdall_branch=v0.2.0-mainnet-1d8aca37 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet"
+ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.6 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet"
 ```
 
 ### Check sync status
@@ -157,25 +157,25 @@ ansible-playbook -l <group-name> playbooks/reboot.yml
 **To setup Heimdall**
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.0-mainnet-1d8aca37 heimdall_network=mainnet" playbooks/heimdall.yml
+ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.2 heimdall_network=mainnet" playbooks/heimdall.yml
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.0-mainnet-1d8aca37 heimdall_network=mainnet" playbooks/heimdall.yml --list-hosts
+ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.2 heimdall_network=mainnet" playbooks/heimdall.yml --list-hosts
 ```
 
 **To setup Bor**
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.1" playbooks/bor.yml
+ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.6" playbooks/bor.yml
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.1" playbooks/bor.yml --list-hosts
+ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.6" playbooks/bor.yml --list-hosts
 ```
 
 ### Adhoc queries

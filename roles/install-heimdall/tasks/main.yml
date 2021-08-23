@@ -9,7 +9,7 @@
     version: "{{ heimdall_branch }}"
 
 - name: Build heimdall
-  command: chdir={{ ansible_env.HOME }}/heimdall make install
+  command: chdir={{ ansible_env.HOME }}/heimdall make install network={{ heimdall_network }}
 
 - name: Creating symlink for heimdalld
   file:

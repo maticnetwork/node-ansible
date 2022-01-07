@@ -31,3 +31,25 @@
       tags:
         - bor
         - clean
+
+    - name: Stop services
+      service:
+        name: "{{ item }}"
+        state: stopped
+      with_items:
+        - bor
+        - heimdalld
+        - heimdalld-bridge
+        - heimdalld-rest-server
+      become: yes
+
+    - name: Clean services file
+      file:
+        path: "/etc/systemd/system/{{ item }}"
+        state: absent
+      with_items:
+        - bor.service
+        - heimdalld.service
+        - heimdalld-bridge.service
+        - heimdalld-rest-server.service
+      become: yes

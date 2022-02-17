@@ -85,8 +85,9 @@ function configure_node() {
 }
 
 function sentry_node_setup() {
+  extra_var=${1}
   cd ${INSTALL_DIR}
-  ansible-playbook --connection=local -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.7 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+  ansible-playbook --connection=local -l sentry playbooks/network.yml --extra-var="${extra_var}"
 }
 
 function get_snapshot_url() {
@@ -126,7 +127,7 @@ function usage() {
 }
 
 # Getopts
-while getopts ":s:m:n:p:" o; do
+while getopts ":s:m:n:p:e:" o; do
     case "${o}" in
         s)
             s=${OPTARG}
@@ -139,6 +140,9 @@ while getopts ":s:m:n:p:" o; do
             ;;
         p)
             p=${OPTARG}
+            ;;
+        e)
+            e=${OPTARG}
             ;;
         *)
             usage
@@ -160,6 +164,10 @@ fi
 if [ "${n}" != "mainnet" ] && [ "${n}" != "mumbai" ]; then
   usage
 fi
+if [ -z "${e}" ];then
+  e="bor_branch=v0.2.14 heimdall_branch=v0.2.5  network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+fi
+echo "EXTRA_VAR=${e}"
 # p is not a natural decimal number
 if [[ ! $p =~ ^[1-9][0-9]*$ ]];then
   usage
@@ -177,7 +185,7 @@ install_ansible
 clone_repo
 configure_inventory
 
-sentry_node_setup
+sentry_node_setup "${e}"
 configure_node "${p}"
 # we need to mount disks on late phase to prevent "existing datadir" complains from ansible
 mount_disk /dev/sdb /root/.bor/data/bor/chaindata bor

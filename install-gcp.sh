@@ -92,8 +92,8 @@ function sentry_node_setup() {
 function get_snapshot_url() {
   network="${1}"
   mode="${2}"
-  # always use pruned snapshot instead of fullnode snapshot
-  if [ "$mode" == "fullnode" ];then
+  # use pruned snapshot instead of fullnode snapshot with mainnet
+  if [ "$mode" == "fullnode" ] && [ "$network" == "mainnet" ] ;then
     mode="pruned"
   fi
   node_type="${3}"

@@ -71,11 +71,14 @@ function configure_inventory() {
 }
 
 function configure_node() {
-  # https://docs.polygon.technology/docs/validate/mainnet/validator-guide/#configuring-your-sentry-node
+  # https://docs.polygon.technology/docs/validate/validate/run-validator-ansible#configure-the-heimdall-service
   http_port="${1}"
+  network="${2}"
   HEIMDALLD_CONFIG="/root/.heimdalld/config/config.toml"
   BOR_START_SH="/root/node/bor/start.sh"
-  sed -i 's/^seeds =.*/seeds ="f4f605d60b8ffaaf15240564e58a81103510631c@159.203.9.164:26656,4fb1bc820088764a564d4f66bba1963d47d82329@44.232.55.71:26656,2eadba4be3ce47ac8db0a3538cb923b57b41c927@35.199.4.13:26656,3b23b20017a6f348d329c102ddc0088f0a10a444@35.221.13.28:26656,25f5f65a09c56e9f1d2d90618aa70cd358aa68da@35.230.116.151:26656"/g' "${HEIMDALLD_CONFIG}"
+  if [ "${network}" == "mainnet" ];then
+    sed -i 's/^seeds =.*/seeds ="f4f605d60b8ffaaf15240564e58a81103510631c@159.203.9.164:26656,4fb1bc820088764a564d4f66bba1963d47d82329@44.232.55.71:26656,2eadba4be3ce47ac8db0a3538cb923b57b41c927@35.199.4.13:26656,3b23b20017a6f348d329c102ddc0088f0a10a444@35.221.13.28:26656,25f5f65a09c56e9f1d2d90618aa70cd358aa68da@35.230.116.151:26656"/g' "${HEIMDALLD_CONFIG}"
+  fi
   sed -i 's/^prometheus =.*/prometheus = true/g' "${HEIMDALLD_CONFIG}"
   sed -i 's/^max_open_connections =.*/max_open_connections = 100/g' "${HEIMDALLD_CONFIG}"
   if ! grep -q bootnodes "${BOR_START_SH}"; then
@@ -85,15 +88,16 @@ function configure_node() {
 }
 
 function sentry_node_setup() {
+  extra_var=${1}
   cd ${INSTALL_DIR}
-  ansible-playbook --connection=local -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.7 heimdall_branch=v0.2.2 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+  ansible-playbook --connection=local -l sentry playbooks/network.yml --extra-var="${extra_var}"
 }
 
 function get_snapshot_url() {
   network="${1}"
   mode="${2}"
-  # always use pruned snapshot instead of fullnode snapshot
-  if [ "$mode" == "fullnode" ];then
+  # use pruned snapshot instead of fullnode snapshot with mainnet
+  if [ "$mode" == "fullnode" ] && [ "$network" == "mainnet" ] ;then
     mode="pruned"
   fi
   node_type="${3}"
@@ -127,7 +131,7 @@ function usage() {
 }
 
 # Getopts
-while getopts ":s:m:n:p:" o; do
+while getopts ":s:m:n:p:e:" o; do
     case "${o}" in
         s)
             s=${OPTARG}
@@ -140,6 +144,9 @@ while getopts ":s:m:n:p:" o; do
             ;;
         p)
             p=${OPTARG}
+            ;;
+        e)
+            e=${OPTARG}
             ;;
         *)
             usage
@@ -161,6 +168,10 @@ fi
 if [ "${n}" != "mainnet" ] && [ "${n}" != "mumbai" ]; then
   usage
 fi
+if [ -z "${e}" ];then
+  e="bor_branch=v0.2.14 heimdall_branch=v0.2.5  network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+fi
+echo "EXTRA_VAR=${e}"
 # p is not a natural decimal number
 if [[ ! $p =~ ^[1-9][0-9]*$ ]];then
   usage
@@ -178,8 +189,8 @@ install_ansible
 clone_repo
 configure_inventory
 
-sentry_node_setup
-configure_node "${p}"
+sentry_node_setup "${e}"
+configure_node "${p}" "${n}"
 # we need to mount disks on late phase to prevent "existing datadir" complains from ansible
 mount_disk /dev/sdb /root/.bor/data/bor/chaindata bor
 mount_disk /dev/sdc /root/.heimdalld/data heimdalld

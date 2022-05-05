@@ -32,6 +32,24 @@
         - bor
         - clean
 
+    - name: Clean Heimdall home directory
+      file:
+        path: "/var/lib/heimdall"
+        state: absent
+      tags:
+        - heimdall
+        - clean
+      become: yes
+
+    - name: Clean Bor home directory
+      file:
+        path: "/var/lib/bor"
+        state: absent
+      tags:
+        - bor
+        - clean
+      become: yes
+
     - name: Stop services
       service:
         name: "{{ item }}"
@@ -39,11 +57,18 @@
       with_items:
         - bor
         - heimdalld
-        - heimdalld-bridge
-        - heimdalld-rest-server
       become: yes
 
     - name: Clean services file
+      file:
+        path: "/lib/systemd/system/{{ item }}"
+        state: absent
+      with_items:
+        - bor.service
+        - heimdalld.service
+      become: yes
+
+    - name: Clean legacy services file
       file:
         path: "/etc/systemd/system/{{ item }}"
         state: absent

@@ -8,20 +8,6 @@
     daemon_reload: yes
   become: yes
 
-- name: reload heimdalld-rest-server
-  systemd:
-    name: heimdalld-rest-server
-    enabled: yes
-    daemon_reload: yes
-  become: yes
-
-- name: reload heimdalld-bridge
-  systemd:
-    name: heimdalld-bridge
-    enabled: yes
-    daemon_reload: yes
-  become: yes
-
 - name: reload bor
   systemd:
     name: bor
@@ -34,22 +20,6 @@
 - name: restart heimdalld
   service:
     name: heimdalld
-    state: restarted
-  listen:
-    - "restart devnet services"
-    - "restart heimdall services"
-
-- name: restart heimdalld-rest-server
-  service:
-    name: heimdalld-rest-server
-    state: restarted
-  listen:
-    - "restart devnet services"
-    - "restart heimdall services"
-
-- name: restart heimdalld-bridge
-  service:
-    name: heimdalld-bridge
     state: restarted
   listen:
     - "restart devnet services"

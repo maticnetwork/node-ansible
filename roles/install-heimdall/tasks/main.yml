@@ -9,25 +9,18 @@
     version: "{{ heimdall_branch }}"
 
 - name: Build heimdall
-  command: chdir={{ ansible_env.HOME }}/heimdall make install network={{ heimdall_network }}
+  command: chdir={{ ansible_env.HOME }}/heimdall make install
 
 - name: Creating symlink for heimdalld
   file:
     src: "{{ ansible_env.HOME }}/go/bin/heimdalld"
-    dest: "/usr/bin/heimdalld"
+    dest: "/usr/local/bin/heimdalld"
     state: link
   become: true
 
 - name: Creating symlink for heimdallcli
   file:
     src: "{{ ansible_env.HOME }}/go/bin/heimdallcli"
-    dest: "/usr/bin/heimdallcli"
-    state: link
-  become: true
-
-- name: Creating symlink for bridge
-  file:
-    src: "{{ ansible_env.HOME }}/go/bin/bridge"
-    dest: "/usr/bin/bridge"
+    dest: "/usr/local/bin/heimdallcli"
     state: link
   become: true

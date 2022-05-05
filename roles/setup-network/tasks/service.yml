@@ -3,8 +3,8 @@
 
 - name: Setup Heimdall service
   copy:
-    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/heimdalld.service"
-    dest: /etc/systemd/system/heimdalld.service
+    src: "{{ ansible_env.HOME }}/heimdall/builder/files/heimdalld.service"
+    dest: /lib/systemd/system/heimdalld.service
     mode: "0755"
     remote_src: true
   notify: reload heimdalld
@@ -12,32 +12,10 @@
   tags:
     - heimdall
 
-- name: Setup Heimdall rest service
-  copy:
-    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/heimdalld-rest-server.service"
-    dest: /etc/systemd/system/heimdalld-rest-server.service
-    mode: "0755"
-    remote_src: true
-  notify: reload heimdalld-rest-server
-  become: true
-  tags:
-    - heimdall
-
-- name: Setup Heimdall bridge service
-  copy:
-    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/heimdalld-bridge.service"
-    dest: /etc/systemd/system/heimdalld-bridge.service
-    mode: "0755"
-    remote_src: true
-  notify: reload heimdalld-bridge
-  become: true
-  tags:
-    - heimdall
-
 - name: Setup Bor service
   copy:
-    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/bor.service"
-    dest: /etc/systemd/system/bor.service
+    src: "{{ ansible_env.HOME }}/bor/builder/files/bor.service"
+    dest: /lib/systemd/system/bor.service
     mode: "0755"
     remote_src: true
   notify: reload bor
@@ -50,17 +28,3 @@
     path: /etc/matic
     state: directory
   become: true
-
-- name: Check if metadata exists
-  stat:
-    path: /etc/matic/metadata
-  register: metadata_to_check
-
-- name: Setup metadata file
-  copy:
-    src: "{{ ansible_env.HOME }}/launch/{{ network_version }}/metadata"
-    dest: /etc/matic/metadata
-    mode: "0755"
-    remote_src: true
-  become: true
-  when: metadata_to_check.stat.exists == False

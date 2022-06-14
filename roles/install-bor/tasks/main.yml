@@ -9,18 +9,11 @@
     version: "{{ bor_branch }}"
 
 - name: Build Bor
-  command: chdir={{ ansible_env.HOME }}/bor make bor-all
+  command: chdir={{ ansible_env.HOME }}/bor make bor
 
 - name: Creating symlink for bor
   file:
     src: "{{ ansible_env.HOME }}/bor/build/bin/bor"
-    dest: "/usr/bin/bor"
-    state: link
-  become: true
-
-- name: Creating symlink for bootnode
-  file:
-    src: "{{ ansible_env.HOME }}/bor/build/bin/bootnode"
-    dest: "/usr/bin/bootnode"
+    dest: "/usr/local/bin/bor"
     state: link
   become: true

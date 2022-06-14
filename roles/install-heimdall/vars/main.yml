@@ -2,4 +2,3 @@
 # vars file for heimdall
 
 heimdall_branch: master
-heimdall_network: mainnet

@@ -2,34 +2,19 @@
 - name: Network node management
   hosts: all
   tasks:
-    - name: Install dependencies
+    - name: update permission for home 
+      ansible.builtin.shell:
+        cmd: sudo chmod 755 {{ ansible_env.HOME }}/
+    
+    - name: Install Dependencies
       include_role:
         name: roles/install-dependencies
-        apply:
-          tags: always
-      tags:
-        - install_dependencies
 
-    - name: Build Heimdall
+    - name: Install Heimdall
       include_role:
         name: roles/install-heimdall
-        apply:
-          tags: always
-      tags:
-        - build
 
-    - name: Build Bor
+    - name: Install Bor
       include_role:
         name: roles/install-bor
-        apply:
-          tags: always
-      tags:
-        - build
 
-    - name: Setup and deploy network
-      include_role:
-        name: roles/setup-network
-        apply:
-          tags: always
-      tags:
-        - deploy

@@ -14,30 +14,18 @@ Note: If your ssh public key (`~/.ssh/id_rsa.pub`) is already on the remote mach
 
 ### Inventory
 
-Ansible manages hosts using `inventory.yml` file. Current setup has two group names:
-
-* `sentry`
-* `validator`
-
-Each group may have multiple IPs (hosts). Each Ansible command needs group name to be mentioned. Ansible runs the playbook on mentioned group's machines. Note that if you don't mention group name, Ansible will run playbook on all machines.
+Ansible manages hosts using `inventory.yml` file.
 
 **Setup inventory**
 
-Add sentry nodes IPs/hosts under the `sentry` group and add validator node's IP/host under `validator` group. 
+Add nodes ip's in `inventory.yml` as example
 
 Example:
 
 ```yml
-all:
-  hosts:
-  children:
-    sentry:
-      hosts:
-        xxx.xxx.xx.xx: # <----- Add IP for sentry node
-        xxx.xxx.xx.xx: # <----- Add IP for sentry node
-    validator:
-      hosts:
-        xxx.xxx.xx.xx: # <----- Add IP for validator node
+#add your instance ips here in palce of xx..
+xxx.xxx.xx.xx # <----- Add IP for sentry/validator node
+
 ```
 
 Note: By default the user to login is setup as ubuntu in `group_vars/all` file. If you have a specific user to be logged in with please change the username in this file.
@@ -45,39 +33,31 @@ Note: By default the user to login is setup as ubuntu in `group_vars/all` file. 
 To check if nodes are reachable, run following commands:
 
 ```bash
-# to check if sentry nodes are reachable
-ansible sentry -m ping
-
-# to check if validator nodes are reachable
-ansible validator -m ping
+# to check if nodes are reachable
+ansible -m ping
 ```
 
 ### Networks
 
 There are two networks available:
 
-* `mainnet-v1` (Mainnet v1)
-* `testnet-v4` (Mumbai testnet)
-
-While running Ansible playbook, `network_version` needs to be set.
-
-Similarly for `heimdall_network` following options can be used
-
 * `mainnet` (Mainnet v1)
-* `mumbai`  (Mumbai testnet)
+* `mumbai` (Mumbai testnet)
+
+While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set.
 
 ### Sentry node setup
 
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 To run actual playbook on sentry nodes:
 
 ```bash
-ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=sentry/sentry heimdall_network=mainnet"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 ### Validator node setup (with sentry)
@@ -85,27 +65,27 @@ ansible-playbook -l sentry playbooks/network.yml --extra-var="bor_branch=v0.2.16
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator" --list-hosts
 ```
 
 To run actual playbook on validator node:
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=sentry/validator heimdall_network=mainnet"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator"
 ```
 
-### Validator node setup (with-out sentry)
+### Archive node setup 
 
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive" --list-hosts
 ```
 
-To run actual playbook on validator node:
+To run actual playbook on achive node:
 
 ```bash
-ansible-playbook -l validator playbooks/network.yml --extra-var="bor_branch=v0.2.16 heimdall_branch=v0.2.11 network_version=mainnet-v1 node_type=without-sentry heimdall_network=mainnet"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive"
 ```
 
 ### Check sync status
@@ -157,25 +137,25 @@ ansible-playbook -l <group-name> playbooks/reboot.yml
 **To setup Heimdall**
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.11 heimdall_network=mainnet" playbooks/heimdall.yml
+ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="heimdall_branch=v0.2.11 heimdall_network=mainnet" playbooks/heimdall.yml --list-hosts
+ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 **To setup Bor**
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.16" playbooks/bor.yml
+ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.16" playbooks/bor.yml --list-hosts
+ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 ### Adhoc queries
@@ -184,32 +164,17 @@ ansible-playbook -l <group-name> --extra-var="bor_branch=v0.2.16" playbooks/bor.
 
 Just to see if machines are reachable:
 
-For sentry nodes:
-
 ```bash
-ansible sentry -m ping
-```
-
-For validator nodes:
-
-```
-ansible validator -m ping
+ansible -m ping
 ```
 
 `ping` is a module name. You can any module and arguments here.
 
 **Run shell command**
 
-Following command will fetch and print all disk space stats from all `sentry` hosts.
+Following command will fetch and print all disk space stats from all hosts.
 
-For sentry nodes:
-
-```bash
-ansible sentry -m shell -a "df -h"
-```
-
-For validator nodes:
 
 ```bash
-ansible validator -m shell -a "df -h"
+ansible -m shell -a "df -h"
 ```

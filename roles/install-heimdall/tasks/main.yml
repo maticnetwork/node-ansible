@@ -1,33 +1,6 @@
 ---
 # tasks file for heimdall
 
-- name: Clone the Heimdall
-  git:
-    repo: "https://github.com/maticnetwork/heimdall.git"
-    dest: "{{ ansible_env.HOME }}/heimdall"
-    force: yes
-    version: "{{ heimdall_branch }}"
-
-- name: Build heimdall
-  command: chdir={{ ansible_env.HOME }}/heimdall make install network={{ heimdall_network }}
-
-- name: Creating symlink for heimdalld
-  file:
-    src: "{{ ansible_env.HOME }}/go/bin/heimdalld"
-    dest: "/usr/bin/heimdalld"
-    state: link
-  become: true
-
-- name: Creating symlink for heimdallcli
-  file:
-    src: "{{ ansible_env.HOME }}/go/bin/heimdallcli"
-    dest: "/usr/bin/heimdallcli"
-    state: link
-  become: true
-
-- name: Creating symlink for bridge
-  file:
-    src: "{{ ansible_env.HOME }}/go/bin/bridge"
-    dest: "/usr/bin/bridge"
-    state: link
-  become: true
+- name: install heimdall pacakges and heimdall profile
+  ansible.builtin.shell:
+    cmd: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/heimdall.sh | bash -s -- {{ heimdall_version }} {{ network }} {{ node_type }}

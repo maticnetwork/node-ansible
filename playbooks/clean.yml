@@ -2,36 +2,6 @@
 - name: Clean node and data directory
   hosts: all
   tasks:
-    - name: Clean launch directory
-      file:
-        path: "{{ ansible_env.HOME }}/launch"
-        state: absent
-      tags:
-        - clean
-
-    - name: Clean node directory
-      file:
-        path: "{{ ansible_env.HOME }}/node"
-        state: absent
-      tags:
-        - clean
-
-    - name: Clean Heimdall home directory
-      file:
-        path: "{{ ansible_env.HOME }}/.heimdalld"
-        state: absent
-      tags:
-        - heimdall
-        - clean
-
-    - name: Clean Bor home directory
-      file:
-        path: "{{ ansible_env.HOME }}/.bor"
-        state: absent
-      tags:
-        - bor
-        - clean
-
     - name: Stop services
       service:
         name: "{{ item }}"
@@ -39,17 +9,9 @@
       with_items:
         - bor
         - heimdalld
-        - heimdalld-bridge
-        - heimdalld-rest-server
       become: yes
 
-    - name: Clean services file
-      file:
-        path: "/etc/systemd/system/{{ item }}"
-        state: absent
-      with_items:
-        - bor.service
-        - heimdalld.service
-        - heimdalld-bridge.service
-        - heimdalld-rest-server.service
-      become: yes
+    - name: remove installed binaries
+      ansible.builtin.shell:
+        cmd: sudo apt remove bor bor-profile heimdall heimdall-profile -y
+

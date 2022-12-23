@@ -1,26 +1,7 @@
 ---
 # tasks file for bor
 
-- name: Cloning the Bor
-  git:
-    repo: "https://github.com/maticnetwork/bor.git"
-    dest: "{{ ansible_env.HOME }}/bor"
-    force: yes
-    version: "{{ bor_branch }}"
+- name: install bor pacakges and bor profile
+  ansible.builtin.shell:
+    cmd: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/bor.sh | bash -s -- {{ bor_version }} {{ network }} {{ node_type }}
 
-- name: Build Bor
-  command: chdir={{ ansible_env.HOME }}/bor make bor-all
-
-- name: Creating symlink for bor
-  file:
-    src: "{{ ansible_env.HOME }}/bor/build/bin/bor"
-    dest: "/usr/bin/bor"
-    state: link
-  become: true
-
-- name: Creating symlink for bootnode
-  file:
-    src: "{{ ansible_env.HOME }}/bor/build/bin/bootnode"
-    dest: "/usr/bin/bootnode"
-    state: link
-  become: true

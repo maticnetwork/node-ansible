@@ -1,7 +1,6 @@
 ---
 - name: Network node management
   hosts: all
-  become: true
   tasks:
     - name: update permission for home 
       ansible.builtin.shell:

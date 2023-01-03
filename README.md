@@ -34,7 +34,7 @@ To check if nodes are reachable, run following commands:
 
 ```bash
 # to check if nodes are reachable
-ansible -m ping
+ansible all -m ping
 ```
 
 ### Networks
@@ -44,7 +44,7 @@ There are two networks available:
 * `mainnet` (Mainnet v1)
 * `mumbai` (Mumbai testnet)
 
-While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set.
+While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set. These Values can be passed in `--extra-var`
 
 ### Sentry node setup
 
@@ -82,7 +82,7 @@ To show list of hosts where the playbook will run (notice `--list-hosts` at the 
 ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive" --list-hosts
 ```
 
-To run actual playbook on achive node:
+To run actual playbook on archive node:
 
 ```bash
 ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive"
@@ -98,6 +98,12 @@ $ curl http://localhost:26657/status
 
 The key called `catching_up` will show your sync status, if it's not catching up it means that you are fully synced!
 
+Start The Bor service after the above command shows as false that mean heimdall is in sync
+
+Command to Start Bor Service
+```bash
+sudo service bor start
+```
 ### Management commands
 
 **To clean deployed setup (warning: this will delete all blockchain data)**
@@ -165,7 +171,7 @@ ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=
 Just to see if machines are reachable:
 
 ```bash
-ansible -m ping
+ansible all -m ping
 ```
 
 `ping` is a module name. You can any module and arguments here.
@@ -176,5 +182,5 @@ Following command will fetch and print all disk space stats from all hosts.
 
 
 ```bash
-ansible -m shell -a "df -h"
+ansible all -m shell -a "df -h"
 ```

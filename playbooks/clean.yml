@@ -13,5 +13,6 @@
 
     - name: remove installed binaries
       ansible.builtin.shell:
-        cmd: sudo apt remove bor bor-profile heimdall heimdall-profile -y
+        cmd: apt remove bor bor-profile heimdalld heimdalld-profile -y
+      become: true
 

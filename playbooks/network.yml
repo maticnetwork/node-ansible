@@ -1,10 +1,12 @@
 ---
 - name: Network node management
   hosts: all
+  become: true
   tasks:
     - name: update permission for home 
       ansible.builtin.shell:
-        cmd: sudo chmod 755 {{ ansible_env.HOME }}/
+        cmd: chmod 755 {{ ansible_env.HOME }}/
+      become: true
     
     - name: Install Dependencies
       include_role:

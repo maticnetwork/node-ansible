@@ -18,9 +18,10 @@
   become: true
 
 - name: start Heimdall service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon-reload: yes
     name: heimdalld.service
+  become: yes
 
 

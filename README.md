@@ -63,11 +63,11 @@ Stop heimdall services :
 ```bash
 systemctl stop heimdalld
 ```
-
-Make sure to 
+Edit /var/lib/heimdall/config/config
 ```bash
-chown -R heimdall:nogroup /var/lib/heimdall/*
+external_address="tcp://<YOUR_SENTRY_NODE>:26656"
 ```
+
 Download newest heimdall snapshot :
 https://snapshot.polygon.technology/
 
@@ -92,10 +92,16 @@ Start The Bor service after the above command shows as false that mean heimdall 
 
 ### Bor Node Setup
 
+Edit /var/lib/bor/config.toml
+```bash
+jsonrpc > host = "0.0.0.0"
+```
+
 Download the newest bor snapshot :
 https://snapshot.polygon.technology/
 ```bash
 tar -xzvf bor-fullnode-snapshot-*.gz -C ~/.bor/data/bor/chaindata
+cd /var/lib/bor/
 chown -R bor:nogroup data/
 ```
 Command to Start Bor Service - Make sure to run as Root

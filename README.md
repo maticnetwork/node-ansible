@@ -6,12 +6,6 @@ Ansible playbooks to setup Matic validator node.
 
 Make sure you are using python3.x with Ansible. To check: `ansible --version` 
 
-### Setup
-
-Note: If your ssh public key (`~/.ssh/id_rsa.pub`) is already on the remote machines, skip this step.
-
-**Copy `pem` private key file as `.workspace/private.pem`** to enable ssh through ansible. If you don't have pem file, just make sure you can reach remote machines from your own machine using ssh (`ssh <username>@ip`). 
-
 ### Inventory
 
 Ansible manages hosts using `inventory.yml` file.
@@ -88,6 +82,29 @@ To run actual playbook on archive node:
 ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive"
 ```
 
+### Setting Up Heimdall Node
+Make sure to start/stop/restart service via root
+
+Stop heimdall services :
+```bash
+systemctl stop heimdalld
+```
+
+Make sure to 
+```bash
+chown -R heimdall:nogroup /var/lib/heimdall/*
+```
+Download newest heimdall snapshot :
+https://snapshot.polygon.technology/
+
+```bash
+tar -xzvf heimdall-snapshot-*.gz -C ~/.heimdalld/data/
+cd /var/lib/heimdall/
+chown -R heimdall:nogroup data/
+
+systemctl enable --now heimdalld
+systemctl restart heimdalld
+```
 ### Check sync status
 
 To check the sync status you can run the follwing command on your node
@@ -97,12 +114,19 @@ $ curl http://localhost:26657/status
 ```
 
 The key called `catching_up` will show your sync status, if it's not catching up it means that you are fully synced!
-
 Start The Bor service after the above command shows as false that mean heimdall is in sync
 
-Command to Start Bor Service
+### Bor Node Setup
+
+Download the newest bor snapshot :
+https://snapshot.polygon.technology/
 ```bash
-sudo service bor start
+tar -xzvf bor-fullnode-snapshot-*.gz -C ~/.bor/data/bor/chaindata
+chown -R bor:nogroup data/
+```
+Command to Start Bor Service - Make sure to run as Root
+```bash
+service bor start
 ```
 ### Management commands
 
@@ -184,3 +208,12 @@ Following command will fetch and print all disk space stats from all hosts.
 ```bash
 ansible all -m shell -a "df -h"
 ```
+
+**FIREWALL Configuration**
+Open ports 22, 80, 443, 8545, 26656 and 30303 to world (0.0.0.0/0) on sentry node firewall.
+
+**External Links**
+
+https://wiki.polygon.technology/docs/develop/network-details/full-node-deployment
+
+https://wiki.polygon.technology/docs/develop/network-details/snapshot-instructions-heimdall-bor

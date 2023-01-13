@@ -31,6 +31,8 @@ To check if nodes are reachable, run following commands:
 ansible all -m ping
 ```
 
+Remove "GO" packet on sentry machine 
+
 ### Networks
 
 There are two networks available:
@@ -52,34 +54,6 @@ To run actual playbook on sentry nodes:
 
 ```bash
 ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=sentry"
-```
-
-### Validator node setup (with sentry)
-
-To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
-
-```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator" --list-hosts
-```
-
-To run actual playbook on validator node:
-
-```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator"
-```
-
-### Archive node setup 
-
-To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
-
-```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive" --list-hosts
-```
-
-To run actual playbook on archive node:
-
-```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive"
 ```
 
 ### Setting Up Heimdall Node

@@ -190,6 +190,7 @@ ansible all -m shell -a "df -h"
 ```
 
 **FIREWALL Configuration**
+
 Open ports 22, 80, 443, 8545, 26656 and 30303 to world (0.0.0.0/0) on sentry node firewall.
 
 **External Links**

@@ -3,8 +3,7 @@
   hosts: all
   tasks:
     - name: update permission for home 
-      ansible.builtin.shell:
-        cmd: chmod 755 {{ ansible_env.HOME }}/
+      shell: chmod 755 {{ ansible_env.HOME }}/
       become: true
     
     - name: Install Dependencies

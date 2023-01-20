@@ -2,5 +2,5 @@
 ansible_user: ubuntu
 network: mainnet
 node_type: sentry
-bor_version: v0.3.0
+bor_version: v0.3.3
 heimdall_version: v0.3.0

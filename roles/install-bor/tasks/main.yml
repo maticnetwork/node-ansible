@@ -3,9 +3,11 @@
 
 - name: install bor pacakges and bor profile
   shell: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/bor.sh | bash -s -- {{ bor_version }} {{ network }} {{ node_type }}
+  become: true
 
 - name: uncomment p2p discovery
-  shell: sudo sed -i 's|.*\[p2p.discovery\]|  \[p2p.discovery\] |g' /var/lib/bor/config.toml
+  shell: sed -i 's|.*\[p2p.discovery\]|  \[p2p.discovery\] |g' /var/lib/bor/config.toml
+  become: true
 
 - name: make bor the user of data directory
   shell: chown bor /var/lib/bor

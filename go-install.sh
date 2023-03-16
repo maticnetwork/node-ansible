@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSION="1.18.1"
+VERSION="1.19"
 
 [ -z "$GOROOT" ] && GOROOT="$HOME/.go"
 [ -z "$GOPATH" ] && GOPATH="$HOME/go"
@@ -83,7 +83,7 @@ echo "Downloading $PACKAGE_NAME ..."
 if hash wget 2>/dev/null; then
     wget https://go.dev/dl/$PACKAGE_NAME -O /tmp/go.tar.gz
 else
-    curl -o /tmp/go.tar.gz https://go.dev/dl/$PACKAGE_NAME
+    curl -L -o /tmp/go.tar.gz https://go.dev/dl/$PACKAGE_NAME
 fi
 
 if [ $? -ne 0 ]; then

@@ -1,10 +1,2 @@
-all:
-
-  hosts:
-  children:
-    sentry:
-      hosts:
-       :
-    validator:
-      hosts:
-        :
+#add your instance ips here in palce of xx..
+xxx.xxx.xxx.xx # <----- Add IP for sentry/validator node

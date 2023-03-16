@@ -11,7 +11,7 @@
   become: true
 
 - name: Setup Mumbai Heimdall Seeds
-  shell: sed -i 's|^seeds =.*|seeds = "b18bbe1f3d8576f4b73d9b18976e71c65e839149@34.226.134.117:26656,4cd60c1d76e44b05f7dfd8bab3f447b119e87042@54.147.31.250:26656,7a6c7b5d25b13ce3448b047dbebeb1a19cc2e092@18.213.200.99:26656"|g' /var/lib/heimdall/config/config.toml
+  shell: sed -i 's|^seeds =.*|seeds = "e72c0466a02ea43b2198bd3a9454b87a3ef0d77e@54.147.31.250:26656,b302d1ddb21102e794b524d05152a7834da05bd1@34.226.134.117:26656,9dfc12d9f39257cefc3d57a4d7302586e59a994e@18.213.200.99:26656"|g' /var/lib/heimdall/config/config.toml
   when: network == "mumbai"
   become: true
 

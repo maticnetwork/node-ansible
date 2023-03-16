@@ -1,0 +1,10 @@
+---
+- hosts: all
+  tasks:
+    - name: Show Heimdall status
+      shell:
+          cmd: |
+              curl -s http://localhost:26657/status | jq .result.sync_info.catching_up
+      register: out
+
+    - debug: msg="{{ out.stdout }}"

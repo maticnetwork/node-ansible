@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+    - name: Show BOR sync or not
+      uri:
+        url: "http://localhost:8545"
+        method: POST
+        body: {"jsonrpc":"2.0","id":"curltext","method":"eth_syncing"}
+        return_content: yes
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+
+      register: bor
+    - name: show list
+      debug: var=bor.content

@@ -6,18 +6,6 @@
     update_cache: yes
   become: true
 
-- name: Install build-essential
-  action: apt pkg=build-essential
-  become: true
-
-- name: Install jq
-  action: apt pkg=jq
-  become: true
-  
-- name: Install git
-  action: apt pkg=git
-  become: true
-
 - name: Install rabbitmq-server
   apt:
     name: rabbitmq-server

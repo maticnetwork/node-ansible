@@ -14,12 +14,55 @@
   become: true
 
 - name: add mainnet bootnodes
-  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://0cb82b395094ee4a2915e9714894627de9ed8498fb881cec6db7c65e8b9a5bd7f2f25cc84e71e89d0947e51c76e85d0847de848c7782b13c0255247a6758178c@44.232.55.71:30303","enode://88116f4295f5a31538ae409e4d44ad40d22e44ee9342869e7d68bdec55b0f83c1530355ce8b41fbec0928a7d75a5745d528450d30aec92066ab6ba1ee351d710@159.203.9.164:30303","enode://4be7248c3a12c5f95d4ef5fff37f7c44ad1072fdb59701b2e5987c5f3846ef448ce7eabc941c5575b13db0fb016552c1fa5cca0dda1a8008cf6d63874c0f3eb7@3.93.224.197:30303","enode://32dd20eaf75513cf84ffc9940972ab17a62e88ea753b0780ea5eca9f40f9254064dacb99508337043d944c2a41b561a17deaad45c53ea0be02663e55e6a302b2@3.212.183.151:30303"]|g' /var/lib/bor/config.toml
+  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://b8f1cc9c5d4403703fbf377116469667d2b1823c0daf16b7250aa576bacf399e42c3930ccfcb02c5df6879565a2b8931335565f0e8d3f8e72385ecf4a4bf160a@3.36.224.80:30303", "enode://8729e0c825f3d9cad382555f3e46dcff21af323e89025a0e6312df541f4a9e73abfa562d64906f5e59c51fe6f0501b3e61b07979606c56329c020ed739910759@54.194.245.5:30303"]|g' /var/lib/bor/config.toml
   when: network == "mainnet"
   become: true
 
 - name: add mumbai bootnodes
-  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://320553cda00dfc003f499a3ce9598029f364fbb3ed1222fdc20a94d97dcc4d8ba0cd0bfa996579dcc6d17a534741fb0a5da303a90579431259150de66b597251@54.147.31.250:30303","enode://f0f48a8781629f95ff02606081e6e43e4aebd503f3d07fc931fad7dd5ca1ba52bd849a6f6c3be0e375cf13c9ae04d859c4a9ae3546dc8ed4f10aa5dbb47d4998@34.226.134.117:30303"]|g' /var/lib/bor/config.toml
+  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://bdcd4786a616a853b8a041f53496d853c68d99d54ff305615cd91c03cd56895e0a7f6e9f35dbf89131044e2114a9a782b792b5661e3aff07faf125a98606a071@43.200.206.40:30303", "enode://209aaf7ed549cf4a5700fd833da25413f80a1248bd3aa7fe2a87203e3f7b236dd729579e5c8df61c97bf508281bae4969d6de76a7393bcbd04a0af70270333b3@54.216.248.9:30303"]|g' /var/lib/bor/config.toml
   when: network == "mumbai"
   become: true
 
+- name: add mumbai static-nodes
+  shell: sed -i 's|.*static-nodes =.*|   static-nodes = ["enode://0b311bc1643dd4e4a9e55a6e40e2f005ac7e85223429d705e9c2cd3209846e029f2f854d3a33e0a718d5cbad83ecdf6fb6937894568bf675ee85af9cf73a89c5@52.214.83.78:30303", "enode://2c400bba0f576736bcc3fb4292c18014bdcfd080e151a330ca163eb6668096eebe65f9e62b346eb031c1da585cd87f93f0df7eee0fcf7709a1ee71388b0f71c4@34.240.114.47:30303", "enode://c121f76915af47d0740474b0ce02b670b084cea3be37b93436810bfac84f0abeecec4be6ae44fe30faeb1b513566ea871422e971fcff2271ae58e3b401cc1502@54.170.47.95:30303", "enode://a57171485aea5b72c244fe6dd6247a7db610638dcece54547fe6a0b8b30212357b672baab550ed26dffe78c0e925b01a08a118396c6660879234aa8284fadbd2@54.194.216.201:30303", "enode://170d08178230a99c4171824fc8c1572e46c9e8ad65194caeeb5c3609a55fab0c6ef24d487991e0cdb8ebd200742c495c0a56804d239c659f5d856e3e88cc7d2e@15.165.109.50:30303", "enode://dfd9dddc584608ad6cfecf0ac67148f702afde63a4e1ec035c01d396ef596553945f6ec051ade901646e23baae2f85977be6a1c8c0718ed011b9c36e34a45fd3@3.37.26.115:30303", "enode://ffea8a9576c3d61fbfb141c65e077ea551e75fb30a91567805e45e80904a1b10294ec81f31b901eafa8785886f73c339f37dc6bd6389e71403fea84f40a2d8f3@43.201.135.93:30303", "enode://8b63e044dac9476c207c2684e431f80fd621d6380f7f19bb2a93a3f6ab99af0bd624c7aedb27978c12189d18371d1d6f5f67cdbe552899bf01449c445cb6ba0b@34.255.201.83:30303" ]|g' /var/lib/bor/config.toml
+  when: network == "mumbai"
+  become: true
+
+- name: add mainnet static-nodes
+  shell: sed -i 's|.*static-nodes =.*|   static-nodes = [ "enode://ad9180a1468702c7c6a7210544593b4bd444768ca754382d1da92fe9abaf408e58160dc72505936df63ca6afc3052e993cade199fe3ff067a5f11b0ee3c6e378@13.209.168.182:30303", "enode://7cf051238a3f92bbee811472a84592ab547ab2692ec09bd2104182551ca6de55f5a7cea48a3d36b411deccb4df976f27076d32019d9ccc4486a916c0e30f3a74@43.201.242.62:30303", "enode://40b4ad081f835ac974472cee8553a455be720263d45d091d395d747c6fa9b615c76e74afe8b9646cddde79ce5fa1dfbfda4d563ab58199681d100c5bbaf7be82@43.202.78.165:30303", "enode://a0da3a49d43404c12a1f350211f4a448cf6715eaa5667813e14e7af88a90820e6b2fb6fcc1a75b0207c19c98c4f6320b4c5c1bdeda408e1fa72710942d4ad6f6@3.38.254.221:30303", "enode://46feaae067017d18cc5c0dee365c970d5004d34e2cf65a82c051b16040b31b1a6714cc14aadc14d95b7c98cc5da3db1d3b8611e19f4ca4e8bee2b0498978c160@15.165.197.16:30303", "enode://fbf7edc7386abc991097687c699e80034518bd3ecc333b0718a49afdf34e93d4ddde377f7210dae4c8e7580e4901d6cbb82a043debe119b71a267c323c6c1ad6@52.78.154.236:30303", "enode://60572bb4659e41d9b2f0a06b2b7c4cf2a7517f2e5e4e49664974bf4c0f52630846f16f190818497d642dcc046698850b689d36d6a9dcd42e388a20e4a46a0de8@52.209.21.164:30303", "enode://71467975c9fbea1d1087693d7af1c8d12bc43029d52c9470b328f7cfe5252475f1886013ddc85ff880b0e7d26b4ce3e33566895ea95d67730e9d91daafbbab2d@99.81.158.129:30303", "enode://4bf816ccbdcd379e4623f65b42b91c18545c1721b58217cbd7258911418f5a112f1f1e01a6580d485844ac2635b3fa1cb6d6c0022319ee5c3a00388aad0b5279@34.254.124.45:30303", "enode://88a7d837d229ec20d9c5805ccb121e2580f2b8b92c3e8b669418addd34f36784ca20d68a672e24ae1daa8862480deed9d73c095b65baa0ce94a6290a1504fd27@34.252.116.193:30303", "enode://a1c1e190a397e351deda6c31faebbd45b459b11cb4ffe63fe894ca4b7860c3c2404ee888f8166c98906f4174c55a64d4f6a2955f6edf3de86d49a5c58e8e955f@54.76.109.39:30303", "enode://0e07395fb40ab63f4f13b0c5630eb94f72f5d4c4b04e5d2c91a1a950a9bfb504889ea9eb811cffb0df55b72883e20e6fde9aba14c9c5d1a48fae18ab3212a7ba@34.246.232.184:30303" ]|g' /var/lib/bor/config.toml
+  when: network == "mainnet"
+  become: true
+
+- name: add values to the maxpeers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 50'
+    backrefs: yes
+  when: node_type == "sentry" or "archive"
+  become: true
+
+- name: add values to the max peers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 20'
+    backrefs: yes
+  when: node_type == "validator"
+  become: true
+
+- name: add values for max peers for bootnode
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 200'
+    backrefs: yes
+  when: node_type == "bootnode"
+  become: true
+
+- name: start bor service
+  systemd:
+    state: restarted
+    daemon-reload: yes
+    name: bor.service
+  become: true

@@ -1,6 +1,5 @@
 ---
 # reload handlers
-
 - name: reload process-exporter
   systemd:
     name: process-exporter

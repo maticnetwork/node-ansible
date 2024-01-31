@@ -1,4 +1,5 @@
 ---
+# arm64 support coming.
 - name: Setup prometheus exporters
   hosts: all
   tasks:

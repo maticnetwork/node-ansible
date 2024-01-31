@@ -16,17 +16,17 @@
 
 - name: Copy the binary of process-exporter
   get_url:
-    url: https://github.com/ncabatoff/process-exporter/releases/download/v0.6.0/process-exporter-0.6.0.linux-amd64.tar.gz
+    url: https://github.com/ncabatoff/process-exporter/releases/download/v0.7.10/process-exporter-0.7.10.linux-amd64.tar.gz
     dest: /tmp
 
 - name: Download and unarchive tar
   unarchive:
-    src: /tmp/process-exporter-0.6.0.linux-amd64.tar.gz
+    src: /tmp/process-exporter-0.7.10.linux-amd64.tar.gz
     dest: /tmp
     remote_src: yes
 
 - name: Move process-exporter binary
-  command: mv /tmp/process-exporter-0.6.0.linux-amd64/process-exporter /usr/bin/
+  command: mv /tmp/process-exporter-0.7.10.linux-amd64/process-exporter /usr/bin/
   become: yes
 
 - name: Chown process-exporter
@@ -40,8 +40,8 @@
     path: "{{ item }}"
     state: absent
   with_items:
-    - /tmp/process-exporter-0.6.0.linux-amd64.tar.gz
-    - /tmp/process-exporter-0.6.0.linux-amd64
+    - /tmp/process-exporter-0.7.10.linux-amd64.tar.gz
+    - /tmp/process-exporter-0.7.10.linux-amd64
 
 - name: Setup process exporter service
   copy:

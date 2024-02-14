@@ -1,0 +1,7 @@
+- name: get bor version
+  shell: 'bor version'
+  register: bor_output
+
+- debug:
+    msg:
+      result: "{{ bor_output }}"

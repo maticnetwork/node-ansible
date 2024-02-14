@@ -1,0 +1,13 @@
+---
+# For this to work properly bor has to be running with the defined path as listed as /var/lib/bor/bor.ipc in the bor
+# config.toml located at /var/lib/bor/config.toml.
+# If you can not use ipc, adjust the shell command in the task to this:
+#   shell: 'bor bootnode -dry-run -node-key /var/lib/bor/data/bor/nodekey -listen-addr 0.0.0.0:30304'
+# It will print the proper details, just will not be as clean as the ipc method.
+- name: get enode details for a host
+  shell: 'sudo bor attach /var/lib/bor/bor.ipc --exec admin.nodeInfo.enode'
+  register: bor_output
+
+- debug:
+    msg:
+      enode: "{{ bor_output }}"

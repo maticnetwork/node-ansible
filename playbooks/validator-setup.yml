@@ -1,0 +1,16 @@
+---
+# This playbook requires the following:
+# 1. cast to be installed on your local machine. # curl -L https://foundry.paradigm.xyz | bash && foundryup
+# 2. SSH key for the network you will setup a validator for environment
+# 3. Polycli is required to be installed on your local machine # https://github.com/maticnetwork/polygon-cli
+# ####################################### #
+# The following playbook will invoke a role that will do the following
+# 1. Generate a wallet/private key pair
+# 2. Use the same pair details to generate a validator keystore config
+# 3. Print the outputs for address, public key, private key, and cast keystore.
+# NOTE, you can and should adapt this playbook for use with your own secrets manager. Like AWS Secrets manager, 1password, lastpass, vault, etc.
+- name: set up a new validator
+  hosts: all
+  gather_facts: no
+  roles:
+    - validator-setup

@@ -1,0 +1,8 @@
+---
+- name: retrieve sync status from heimdall
+  shell: 'curl -s http://localhost:1317/syncing'
+  register: heimdall_sync_output
+
+- debug:
+    msg:
+      result: "{{ heimdall_sync_output }}"

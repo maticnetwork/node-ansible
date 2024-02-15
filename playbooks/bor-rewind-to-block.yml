@@ -1,0 +1,9 @@
+---
+# ansible-playbook -i $inventory playbooks/posv1-bor-rewind-node.yml -e "block_height=$hash"
+# This playbook sets the debug flag on the node, it restarts bor, execs the rewind function, then exit
+- name: setup and execute a rewind on node
+  hosts: all
+  become: true
+  roles:
+    - roles/bor-rewind-to-block
+    - roles/restart-heimdall

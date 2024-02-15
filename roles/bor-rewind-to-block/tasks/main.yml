@@ -1,0 +1,22 @@
+---
+# this is basically : bor attach /var/lib/bor/bor.ipc --exec "debug.setHead('$hex_value_of_block_height')"
+# RPC example: curl http://localhost:8545 -X POST --data '{"jsonrpc":"2.0","method":"debug_setHead","params":["<block number in hex>"],"id":1}' -H "Content-Type: application/json"
+- name: convert block to hexadecimal value
+  set_fact:
+    hex_value: "{{ '%x' | format(block_height | int) }}"
+
+- name: create block hash
+  set_fact:
+    block_hash: "0x{{ hex_value }}"
+
+- name: display the hex value
+  debug:
+    msg: "The value of {{ block_height }} converted to hex is {{ block_hash }}"
+
+- name: preparing command
+  debug:
+    msg: "Command to run, sudo bor attach /var/lib/bor/bor.ipc --exec debug.setHead('{{ block_hash }}')"
+
+- name: setHead on bor node aka REWIND
+  command: sudo bor attach /var/lib/bor/bor.ipc --exec "debug.setHead('{{ block_hash }}')"
+  register: reset_details

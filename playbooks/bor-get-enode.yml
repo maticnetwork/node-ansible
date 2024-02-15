@@ -5,4 +5,4 @@
   hosts: all
   become: true
   roles:
-    - bor-get-enode
+    - roles/bor-get-enode

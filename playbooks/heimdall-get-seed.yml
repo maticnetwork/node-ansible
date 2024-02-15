@@ -5,4 +5,4 @@
   hosts: all
   become: true
   roles:
-    - heimdall-get-seed
+    - roles/heimdall-get-seed

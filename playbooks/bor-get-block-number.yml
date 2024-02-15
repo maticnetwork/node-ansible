@@ -5,4 +5,4 @@
   hosts: all
   become: true
   roles:
-    - bor-get-block-number
+    - roles/bor-get-block-number

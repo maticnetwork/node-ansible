@@ -5,4 +5,4 @@
 - name: get syncing status from heimdall
   hosts: all
   roles:
-    - heimdall-get-sync-status
+    - roles/heimdall-get-sync-status

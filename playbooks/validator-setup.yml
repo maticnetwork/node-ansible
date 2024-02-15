@@ -13,4 +13,4 @@
   hosts: all
   gather_facts: no
   roles:
-    - validator-setup
+    - roles/validator-setup

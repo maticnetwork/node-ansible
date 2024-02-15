@@ -3,4 +3,4 @@
 - name: get bor version
   hosts: all
   roles:
-    - bor-get-version
+    - roles/bor-get-version

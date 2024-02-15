@@ -3,4 +3,4 @@
 - name: get heimdall version
   hosts: all
   roles:
-    - heimdall-get-version
+    - roles/heimdall-get-version

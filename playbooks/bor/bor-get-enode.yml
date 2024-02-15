@@ -1,8 +1,0 @@
----
-# ansible-playbook -i  $inventory playbooks/bor-get-enode.yml
-#
-- name: get enode details
-  hosts: all
-  become: true
-  roles:
-    - roles/bor-get-enode

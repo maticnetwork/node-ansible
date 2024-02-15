@@ -1,6 +1,0 @@
----
-# ansible-playbook -i $inventory playbooks/bor-get-version
-- name: get bor version
-  hosts: all
-  roles:
-    - roles/bor-get-version

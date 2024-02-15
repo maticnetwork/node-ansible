@@ -12,9 +12,9 @@
 
     - name: Install Heimdall
       include_role:
-        name: roles/install-heimdall
+        name: roles/heimdall/install-heimdall
 
     - name: Install Bor
       include_role:
-        name: roles/install-bor
+        name: roles/bor/install-bor
 

@@ -1,8 +1,0 @@
----
-# ansible-playbook -i $inventory playbooks/heimdall-get-seed.yml
-#
-- name: get heimdall seed details
-  hosts: all
-  become: true
-  roles:
-    - roles/heimdall-get-seed

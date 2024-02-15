@@ -1,8 +1,8 @@
 ---
-# ansible-playbook -i $inventory playbooks/bor-get-block-number.yml
+# ansible-playbook -i $inventory playbooks/bor/get-block-number.yml
 # this prints the current block number, no other details.
 - name: get current block number for bor node
   hosts: all
   become: true
   roles:
-    - roles/bor-get-block-number
+    - roles/bor/get-block-number

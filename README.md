@@ -115,7 +115,7 @@ ansible-playbook -l <group-name> playbooks/clean.yml
 **To show Heimdall account**
 
 ```bash
-ansible-playbook -l <group-name> playbooks/show-heimdall-account.yml
+ansible-playbook -l <group-name> playbooks/heimdall/heimdall-show-account.yml
 ```
 
 **To increase ulimit**
@@ -143,25 +143,25 @@ ansible-playbook -l <group-name> playbooks/reboot.yml
 **To setup Heimdall**
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 **To setup Bor**
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 ### Adhoc queries

@@ -1,0 +1,8 @@
+---
+- name: get syncing status
+  shell: 'sudo bor attach /var/lib/bor/bor.ipc --exec eth.blockNumber'
+  register: block_number
+
+- debug:
+    msg:
+      block_height: "{{ block_number }}"

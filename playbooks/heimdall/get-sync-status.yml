@@ -1,0 +1,8 @@
+---
+# ansible-playbook -i $inventory playbooks/heimdall/get-sync-status.yml
+# Is syncing, if result = { "syncing" : true }
+# In sync, if result = { "syncing" : false }
+- name: get syncing status from heimdall
+  hosts: all
+  roles:
+    - roles/heimdall/get-sync-status

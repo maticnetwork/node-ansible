@@ -1,0 +1,5 @@
+---
+- name: restart heimdall
+  systemd:
+    name: heimdalld
+    state: restarted

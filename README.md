@@ -74,6 +74,12 @@ To run actual playbook on validator node:
 ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator"
 ```
 
+To setup a validator wallet/keys
+```bash
+ansible-playboook -i $inventory playbooks/validator-setup.yml
+```
+
+
 ### Archive node setup 
 
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
@@ -95,6 +101,10 @@ To check the sync status you can run the follwing command on your node
 ```js
 $ curl http://localhost:26657/status
 ```
+You can also use the following playbook
+```bash
+ansible-playbook -i $inventory playbooks/heimdall/get-sync-status.yml
+```
 
 The key called `catching_up` will show your sync status, if it's not catching up it means that you are fully synced!
 
@@ -115,7 +125,7 @@ ansible-playbook -l <group-name> playbooks/clean.yml
 **To show Heimdall account**
 
 ```bash
-ansible-playbook -l <group-name> playbooks/show-heimdall-account.yml
+ansible-playbook -l <group-name> playbooks/heimdall/heimdall-show-account.yml
 ```
 
 **To increase ulimit**
@@ -143,25 +153,25 @@ ansible-playbook -l <group-name> playbooks/reboot.yml
 **To setup Heimdall**
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 **To setup Bor**
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/heimdall.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
 ```
 
 ### Adhoc queries

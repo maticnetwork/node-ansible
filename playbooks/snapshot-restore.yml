@@ -9,4 +9,4 @@
   hosts: all
   become: true
   roles:
-    - snapshot-restore
+    - roles/snapshot-restore

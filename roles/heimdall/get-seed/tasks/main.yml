@@ -1,0 +1,8 @@
+---
+- name: get heimdall seed
+  shell: 'sudo heimdalld tendermint show-node-id'
+  register: heimdall_seed_output
+
+- debug:
+    msg:
+      heimdall-seed: "{{ heimdall_seed_output }}"

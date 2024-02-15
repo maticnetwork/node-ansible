@@ -1,0 +1,6 @@
+---
+# ansible-playbook -i $inventory playbooks/heimdall/get-version.yml
+- name: get heimdall version
+  hosts: all
+  roles:
+    - roles/heimdall/get-version

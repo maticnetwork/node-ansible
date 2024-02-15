@@ -1,0 +1,164 @@
+---
+# This role sets up the wallet and key pair
+# Uses this information with heimdallcli of the target host
+# to create the UTC file. Keystore password.txt
+# Moves the UTC formatted file and password.txt to the bor keystore location
+#
+### Generate Random Passphrase ###
+# This passphrase is used in the heimdallcli process and is found in password.txt ( Yeah, bad sec, but not my doing )
+- name: generate a random passphrase for the password.txt
+  set_fact:
+    passphrase: "{{ lookup('password', '/dev/null length=10 chars=ascii_letters,digits') }}"
+
+- name: generate a random passphrase for cast keystore
+  set_fact:
+    cast_keystore: "{{ lookup('password', '/dev/null length=10 chars=ascii_letters,digits') }}"
+
+- name: create keystore directory
+  shell: 'mkdir keystore'
+  delegate_to: localhost
+
+# Create wallet and details capturing
+- name: using cast to create wallet
+  shell: 'cast wallet new keystore --unsafe-password {{ cast_keystore }}'
+  register: walletgen_output
+  delegate_to: localhost
+  no_log: true
+
+- name: capturing the address value
+  set_fact:
+    address: "{{ walletgen_output.stdout | regex_search('Address:\\s+(.*)',  '\\1') | first  }}"
+
+- name: get the address keystore
+  find:
+    paths: keystore
+    file_type: file
+  delegate_to: localhost
+  register: address_keystore
+
+- name: extracting the private key value
+  shell: 'polycli parseethwallet --file {{ address_keystore.files[0].path }} --password {{ cast_keystore }}'
+  register: wallet_decrypt_output
+  delegate_to: localhost
+  when: address_keystore.files | length == 1
+
+- name: capturing private key value
+  set_fact:
+    private_key: "{{ wallet_decrypt_output.stdout | from_json | json_query('PrivateKey') }}"
+
+- name: capturing the public key value
+  set_fact:
+    public_key: "{{ wallet_decrypt_output.stdout | from_json | json_query('PublicKey') }}"
+
+### Remote ###
+# Generate UTC file based on keys
+# Set up appropriate directory structures
+# Copy files over
+# Setup the password.txt
+# Chown dir for good measure
+- name: generating UTC file via heimdallcli on remote host
+  expect:
+    command: "sudo heimdallcli generate-keystore {{ private_key }}"
+    responses:
+      'Passphrase:': '{{ passphrase }}'
+      'Repeat passphrase:': '{{ passphrase }}'
+  no_log: true
+
+- name: create bor keystore directory
+  shell: 'sudo mkdir -p /var/lib/bor/keystore'
+
+- name: move utc file to bor
+  shell: 'sudo mv UTC-** /var/lib/bor/keystore/'
+
+- name: create password.txt
+  shell: 'sudo touch /var/lib/bor/keystore/password.txt'
+
+- name: populate the password.txt
+  shell: " echo {{ passphrase }} | sudo tee -a /var/lib/bor/keystore/password.txt > /dev/null"
+
+- name: chown keystore for good measure
+  shell: 'sudo chown -R bor /var/lib/bor'
+
+- name: uncomment unlock entry
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*unlock =.*$)'
+    line: '\1\2'
+    backrefs: yes
+
+- name: add values to the unlock array
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*unlock =.*$'
+    line: 'unlock = [ "{{ address }}" ]'
+    backrefs: yes
+
+- name: uncomment etherbase entry
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*etherbase =.*$)'
+    line: '\1\2'
+    backrefs: yes
+
+- name: add the wallet address to the etherbase entry
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*etherbase =.*$'
+    line: 'etherbase = "{{ address }}"'
+    backrefs: yes
+
+
+- name: uncomment password entry
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*password =.*$)'
+    line: '\1\2'
+    backrefs: yes
+
+- name: update password to location password.txt
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*password =.*$'
+    line: 'password = "/var/lib/bor/keystore/password.txt"'
+    backrefs: yes
+
+- name: uncomment the keystore definition in config.toml
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*keystore =.*$)'
+    line: '\1\2'
+    backrefs: yes
+
+- name: update the keystore definition in config.toml
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*keystore =.*$'
+    line: '\t keystore = "/var/lib/bor/keystore"'
+    backrefs: yes
+
+
+### Printing details, please adapt this for your own use with a secrets manager, vault, 1password, etc. ########
+
+- debug:
+    msg:
+      wallet_address: "{{ address }}"
+
+- debug:
+    msg:
+      public_key: "{{ public_key }}"
+
+- debug:
+    msg:
+      private_key: "{{ private_key }}"
+
+- debug:
+    msg:
+      password_for_wallet: "{{ cast_keystore }}"

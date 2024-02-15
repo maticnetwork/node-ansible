@@ -1,0 +1,7 @@
+- name: get heimdall version
+  shell: 'heimdalld version'
+  register: heimdall_output
+
+- debug:
+    msg:
+      result: "{{ heimdall_output }}"

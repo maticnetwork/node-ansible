@@ -148,8 +148,6 @@ function load_snapshots() {
 
 function polygonctl() {
   service heimdalld $1
-  service heimdalld-rest-server $1
-  service heimdalld-bridge $1
   service bor $1
 }
 

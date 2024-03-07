@@ -1,0 +1,11 @@
+---
+# Usage:
+# ansible-playbook -i $inventory.yml playbooks/heimdall/snapshot-create -e "data=$path target=$target_save_dir"
+# YOUR DATA VARIABLE IS THE PATH TO YOUR HEIMDALL DATA DIRECTORY
+# EXAMPLE PATH: /opt/heimdall/data
+# This tool assumes you have space on the target host, feel free to modify to copy to your needs
+- name: Create heimdall snapshot
+  hosts: all
+  roles:
+    - roles/heimdall/stop-bor
+    - roles/heimdall/create-snapshot

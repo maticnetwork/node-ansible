@@ -1,0 +1,11 @@
+---
+# Usage:
+# ansible-playbook -i $inventory.yml playbooks/bor/snapshot-create -e "chaindata=$path target=$target_save_dir"
+# YOUR CHAINDATA VARIABLE IS THE PATH TO YOUR BOR CHAINDATA
+# EXAMPLE PATH: /opt/bor/data/bor/chaindata
+# This tool assumes you have space on the target host, feel free to modify to copy to your needs
+- name: Create bor snapshot
+  hosts: all
+  roles:
+     - roles/bor/stop-bor
+     - roles/bor/create-snapshot

@@ -1,0 +1,5 @@
+---
+- name: stop heimdall
+  systemd:
+    name: heimdalld
+    state: stopped

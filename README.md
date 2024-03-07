@@ -194,3 +194,16 @@ Following command will fetch and print all disk space stats from all hosts.
 ```bash
 ansible all -m shell -a "df -h"
 ```
+
+**Snapshots and Backups**
+
+You can run the following playbook to start a snapshot on your host for bor
+```bash
+ansible-playbook -i $inventory playbooks/bor/snapshot-create -e "chaindata=$path target=$target_save_dir"
+ansible-playbook -i $inventory playbooks/heimdall/snapshot-create -e "data=$path target=$target_save_dir"
+```
+
+You can run the following command on to take a backup of your validator. This playbook assumes you know path of bor and heimdall config directories
+```bash
+ansible-playbook -i $inventory playbooks/validator-backup.yml -e "destination=$WHERE_YOU_WANT_TO_SAVE_LOCALLY bor_path=PATH_TO_YOUR_BOR_INSTALL heimdall_path=PATH_TO_YOUR_HEIMDALL_PATH"
+```

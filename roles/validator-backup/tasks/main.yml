@@ -18,10 +18,10 @@
 - name: copying over the files for the validator
   ansible.builtin.shell:
     cmd: |
-      sudo cp -rp /var/lib/bor/config.toml validator_migration_{{ host_name }}/bor/
-      sudo cp -rp /var/lib/bor/keystore/UTC** validator_migration_{{ host_name }}/bor/keystore/
-      sudo cp -rp /var/lib/bor/keystore/password.txt validator_migration_{{ host_name }}/bor/keystore/
-      sudo cp -rp /var/lib/heimdall/config/* validator_migration_{{ host_name }}/heimdall/
+      sudo cp -rp {{ bor_path }}/config.toml validator_migration_{{ host_name }}/bor/
+      sudo cp -rp {{ bor_path }}/keystore/UTC** validator_migration_{{ host_name }}/bor/keystore/
+      sudo cp -rp {{ bor_path }}/keystore/password.txt validator_migration_{{ host_name }}/bor/keystore/
+      sudo cp -rp {{ heimdall_path }}/config/* validator_migration_{{ host_name }}/heimdall/
       sudo chown -R ubuntu validator_migration_{{ host_name }}
 
 - name: creating the tarball of the configs

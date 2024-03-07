@@ -1,0 +1,10 @@
+---
+# Usage:
+# ansible-playbook -i $inventory playbooks/validator-backup.yml -e "destination=$WHERE_YOU_WANT_TO_SAVE_LOCALLY"
+# NOTE BE VERY CAREFUL WHEN USING THIS, ONLY USE THIS WHEN MIGRATING TO A NEW HOST AND UNABLE TO GENERATE A NEW SIGNING KEY
+#
+- name: backup validator
+  hosts: all
+  become: true
+  roles:
+    - roles/validator-backup

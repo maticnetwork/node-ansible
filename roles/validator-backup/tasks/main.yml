@@ -1,0 +1,42 @@
+---
+- name: get the hostname to use
+  command: hostname
+  register: hostname_output
+
+- name: use the hostname output as a variable
+  set_fact:
+    host_name: "{{ hostname_output.stdout }}"
+
+- name: create directory for the files to be restored.
+  ansible.builtin.shell:
+    cmd: |
+      mkdir validator_migration_{{ host_name }}
+      mkdir -p validator_migration_{{ host_name }}/bor
+      mkdir -p validator_migration_{{ host_name }}/bor/keystore
+      mkdir -p validator_migration_{{ host_name }}/heimdall
+
+- name: copying over the files for the validator
+  ansible.builtin.shell:
+    cmd: |
+      sudo cp -rp /var/lib/bor/config.toml validator_migration_{{ host_name }}/bor/
+      sudo cp -rp /var/lib/bor/keystore/UTC** validator_migration_{{ host_name }}/bor/keystore/
+      sudo cp -rp /var/lib/bor/keystore/password.txt validator_migration_{{ host_name }}/bor/keystore/
+      sudo cp -rp /var/lib/heimdall/config/* validator_migration_{{ host_name }}/heimdall/
+      sudo chown -R ubuntu validator_migration_{{ host_name }}
+
+- name: creating the tarball of the configs
+  ansible.builtin.shell:
+    cmd: |
+      tar -czvf validator_migration_{{ host_name }}.tar.gz validator_migration_{{ host_name }} && mv validator_migration_{{ host_name }}.tar.gz /tmp/
+      rm -rf validator_migration_{{ host_name }}
+
+- name: fetching the tarball from localhost to local
+  fetch:
+    src: /tmp/validator_migration_{{ host_name }}.tar.gz
+    dest: "{{ destination }}"
+    flat: yes
+
+- name: delete the tarball on the remote host
+  ansible.builtin.shell:
+    cmd: |
+      sudo rm -rf /tmp/validator_migration_{{ host_name }}.tar.gz

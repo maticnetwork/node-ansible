@@ -1,0 +1,13 @@
+---
+# Usage:
+# This role is used in snapshot-create playbook for bor
+# ansible-playbook -i $inventory.yml playbooks/heimdall/snapshot-create -e "data=$path target=$target_save_dir"
+# This role assumes you have space on the target host, feel free to modify to copy to your needs
+# Note this is just creating a tarball of the chaindata
+# As this play can take some serious time, be patient. Also check screen session for status
+- name: set date variable
+  ansible.builtin.set_fact:
+    current_date: "{{ lookup('pipe', 'date +%Y%m%d') }}"
+
+- name: start the snapshot process
+  shell: sudo screen -dmS snaphem tar -czf {{ target }}/heimdall_{{ current_date }}_snapshot.tar.gz -C {{ data }} .

@@ -1,0 +1,11 @@
+---
+# Usage:
+# ansible-playbook -i $inventory playbooks/validator-backup.yml -e "destination=$WHERE_YOU_WANT_TO_SAVE_LOCALLY bor_path=PATH_TO_YOUR_BOR_INSTALL heimdall_path=PATH_TO_YOUR_HEIMDALL_PATH"
+# example: ansible-playbook -i $inventory playbooks/validator-backup.yml -e "destination=~/Downloads/ bor_path=/opt/bor heimdall_path=/opt/heimdall
+# NOTE BE VERY CAREFUL WHEN USING THIS, ONLY USE THIS WHEN MIGRATING TO A NEW HOST AND UNABLE TO GENERATE A NEW SIGNING KEY
+#
+- name: backup validator
+  hosts: all
+  become: true
+  roles:
+    - roles/validator-backup

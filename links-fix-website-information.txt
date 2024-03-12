@@ -1,0 +1,13 @@
+Review the site documentation to remove and update information.
+
+https://docs.polygon.technology/docs/integrate/full-node-binaries/#polygon-full-node-setup-using-binaries
+
+https://docs.polygon.technology/docs/integrate/full-node-deployment/#full-node-deployment-polygon-mainnet
+
+https://docs.polygon.technology/docs/integrate/full-node-binaries/
+
+https://docs.polygon.technology/docs/integrate/full-node-deployment/
+
+https://docs.polygon.technology/docs/develop/network-details/full-node-deployment/
+
+https://docs.polygon.technology/docs/develop/network-details/technical-requirements

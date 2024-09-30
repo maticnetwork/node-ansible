@@ -42,7 +42,7 @@ ansible all -m ping
 There are two networks available:
 
 * `mainnet` (Mainnet v1)
-* `mumbai` (Mumbai testnet)
+* `amoy` (Amoy testnet)
 
 While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set. These Values can be passed in `--extra-var`
 

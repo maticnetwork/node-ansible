@@ -1,7 +1,0 @@
----
-# vars file for bor
-
-network: mainnet
-node_type: sentry
-bor_version: v1.2.3
-heimdall_version: v1.0.3

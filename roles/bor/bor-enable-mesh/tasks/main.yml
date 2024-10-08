@@ -1,0 +1,47 @@
+---
+# This role enables the appropriate configs and adds peers to the bor config.toml
+# Note, this playbook implies you are using the current fs layout, but can be modified accordingly
+# You can use -e "static=yes" to add static nodes
+- name: add values to the maxpeers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 2000'
+    backrefs: yes
+
+- name: adjust values to the maxpendpeers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpendpeers =.*$'
+    line: '\t maxpendpeers = 500'
+    backrefs: yes
+
+- name: uncomment line and add values
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*dns =.*$)'
+    line: '\1\2'
+    backrefs: yes
+
+- name: add values to the dns array
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*dns =.*$'
+    line: '\t dns =  [ "enrtree://AKUEZKN7PSKVNR65FZDHECMKOJQSGPARGTPPBI7WS2VUL4EGR6XPC@pos.polygon-peers.io" ]'
+    backrefs: yes
+
+- name: uncomment line and for static node, entry
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^(\s*)#(\s*static-nodes =.*$)'
+    line: '\1\2'
+    backrefs: yes
+  when: static == 'yes'
+
+- name: add values to the static-nodes array
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*static-nodes =.*$'
+    line: '\t static-nodes =  [ "enode://d3f730b7a4d07fb1a9de7f1d61c888d373fab9e9456ac6d75f3e457b6c65b1bae6055d8f606a273cbd4230b325909fa618b8ff5426c09bf9b1f1779d5e66641e@34.64.149.147:30303", "enode://74684e81dbfec2026c7ac4bc62dbb9692a2c0cc8ab9a27fca58f5d2c1bcf303072c8a46df4df632d8104e17df942c2f18716289107064a951e4f7e15dcb8c37e@35.234.116.139:30303", "enode://70dd5cb596cbd260cfecc85e7be6b64564f8237b076712ed4ca7705bf7c625c628701e49d34f789ef166950d67e55d2badb2b2b0503baae8b4d3553ef568d585@34.118.158.117:30303" ]'
+    backrefs: yes
+  when: static == 'yes'

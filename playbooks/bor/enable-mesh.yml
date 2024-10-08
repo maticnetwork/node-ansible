@@ -1,0 +1,11 @@
+---
+# This playbook enables mesh network nodes for the specific node for bor
+# ansible-playbook -i $inventory playbooks/pos/pos-bor-enable-mesh.yml
+# Use the -e "static=yes" to add the static nodes in the configs
+- name: enable mesh network nodes for bor
+  hosts: all
+  become: true
+  roles:
+    - roles/bor/stop-bor
+    - roles/bor/bor-enable-mesh
+    - roles/bor/start-bor

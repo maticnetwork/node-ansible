@@ -1,2 +1,76 @@
+# -----------------------------------------------------------------------------
+# Workspace / IDE specific settings (ignore local IDE config and metadata)
+# -----------------------------------------------------------------------------
 .workspace
 .idea
+**/.idea
+.vscode
+*.iml
+*.ipr
+
+# Ignore JetBrains IDE temporary shelf and workspace files
+/shelf/
+/workspace.xml
+
+# Editor-based HTTP Client requests (e.g., IntelliJ)
+/httpRequests/
+
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# -----------------------------------------------------------------------------
+# Ansible-specific files
+# -----------------------------------------------------------------------------
+.ansible
+secrets.yml
+
+# -----------------------------------------------------------------------------
+# macOS system files (automatically generated files that should be ignored)
+# -----------------------------------------------------------------------------
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two carriage returns
+Icon
+
+# macOS thumbnail and resource fork files
+._*
+
+# Files appearing in the root of volumes
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# macOS remote Apple File Protocol (AFP) share metadata
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# -----------------------------------------------------------------------------
+# Linux system files
+# -----------------------------------------------------------------------------
+*~                      # Backup files from editors (e.g., file~)
+.fuse_hidden*           # Temporary files by FUSE
+.directory              # KDE directory metadata
+.Trash-*                # Trash info on mounted Linux partitions
+.nfs*                   # Temporary NFS files from deleted-but-open files
+
+# -----------------------------------------------------------------------------
+# Environment & Secrets files
+# -----------------------------------------------------------------------------
+.env                    # General environment config
+*.env                   # Any additional .env-based config files
+.token.env              # Token-based env files
+*.token.env             # Variants of token env files
+*.token.env.*           # Deep match token files
+*.token                 # Token files
+env                     # Unprefixed env file

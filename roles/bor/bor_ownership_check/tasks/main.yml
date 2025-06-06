@@ -1,0 +1,20 @@
+---
+# Fix ownership of the Bor data directory if it’s not already owned by the expected user
+- name: Fix Bor directory ownership if incorrect
+  command: "sudo chown -R {{ bor_user | default('bor') }}:nogroup {{ bor_path | default('/var/lib/bor') }}"
+  when: bor_data_status.stat.pw_name != (bor_user | default('bor'))
+  register: bor_fix_output
+  ignore_errors: yes  # Avoid failing if chown fails
+
+# Re-check the ownership after the fix attempt
+- name: Re-check ownership after fix
+  stat:
+    path: "{{ bor_path | default('/var/lib/bor') }}"
+  register: bor_data_status_after
+  when: bor_data_status.stat.pw_name != (bor_user | default('bor'))
+
+# Display updated ownership status
+- name: Show updated ownership of Bor directory
+  debug:
+    msg: "Ownership is now {{ bor_data_status_after.stat.pw_name }}:{{ bor_data_status_after.stat.gr_name }}"
+  when: bor_data_status.stat.pw_name != (bor_user | default('bor'))

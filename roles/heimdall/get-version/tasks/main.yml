@@ -1,7 +1,10 @@
-- name: get heimdall version
-  shell: 'heimdalld version'
-  register: heimdall_output
+# Run the Heimdall binary to retrieve the current version
+- name: Check Heimdall version
+  command: heimdalld version
+  register: heimdall_version_result
+  ignore_errors: yes  # Don’t fail the play if the binary is missing
 
-- debug:
-    msg:
-      result: "{{ heimdall_output }}"
+# Print the Heimdall version, or error message 
+- name: Print Heimdall version
+  debug:
+    msg: "{{ heimdall_version_result.stdout | default('Heimdall version check failed') }}"

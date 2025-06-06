@@ -1,0 +1,38 @@
+# Sanity check for a Polygon node (sentry or validator)
+
+- name: |
+    Check:
+    - OS Version
+    - Bor and Heimdall versions
+    - Config file values (Bor and Heimdall)
+    - Do data directories exist?
+    - Directory ownership
+    - Is net-tools installed?
+    - Are critical ports open?
+    - RPC endpoint checks
+    - Heimdall account info (validator node)
+    - Bor service logs
+    - Heimdall service logs
+  hosts: all
+  gather_facts: yes
+
+  vars:
+    # Set the node type explicitly (override via -e if needed)
+    node_type: "sentry"
+
+  roles:
+    - os_version                                 # Print base OS info
+    - bor/get-version                            # Check and print Bor binary version
+    - bor/bor_directory_check                    # Verify Bor data directory exists
+    - bor/bor_ownership_check                    # Check and fix Bor directory ownership if needed
+    - bor/bor_config_check                       # Parse and report Bor config.toml values
+    - heimdall/heimdall_config_check             # Parse and report Heimdall config.toml values
+    - heimdall/get-version                  # Check and print Heimdall binary version
+    - heimdall/heimdall_directory_check          # Verify Heimdall data directory exists
+    - heimdall/heimdall_ownership_check          # Check and fix Heimdall directory ownership
+    - install_nettools                           # Make sure netstat is available for port checks
+    - port_check                                 # Check critical ports (26656, 30303)
+    - rpc_checks                                 # Query Bor and Heimdall RPC endpoints
+    - heimdall/heimdall_account_details          # Show Heimdall account (validator only)
+    - bor/bor_logs                               # Tail latest Bor service logs
+    - heimdall/heimdall_logs                     # Tail latest Heimdall service logs

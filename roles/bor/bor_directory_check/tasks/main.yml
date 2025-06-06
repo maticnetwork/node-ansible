@@ -1,0 +1,11 @@
+---
+# Check Bor data directory existence (override with -e bor_data_dir=...)
+- name: Check Bor directory stats
+  stat:
+    path: "{{ bor_data_dir | default('/var/lib/bor/data') }}"
+  register: bor_data_status
+
+# Print ownership details of the Bor data directory
+- name: Print Bor directory ownership
+  debug:
+    msg: "Bor directory is owned by {{ bor_data_status.stat.pw_name }}:{{ bor_data_status.stat.gr_name }}"

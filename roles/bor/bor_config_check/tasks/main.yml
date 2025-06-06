@@ -1,0 +1,96 @@
+---
+# Read and decode Bor's config.toml (defaults can be overridden via -e)
+- name: Read Bor config.toml file
+  become: yes
+  slurp:
+    src: "{{ bor_config_path | default('/var/lib/bor/config.toml') }}"
+  register: bor_config_file
+
+# Decode the config file content from base64 into raw text
+- name: Decode Bor config.toml content
+  set_fact:
+    bor_config_content: "{{ bor_config_file.content | b64decode }}"
+
+# For sentry node
+- block:
+
+    # Extract config values relevant for a sentry node
+    - name: Extract Bor config values (sentry)
+      set_fact:
+        bor_chain: "{{ bor_config_content | regex_search('chain\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_datadir: "{{ bor_config_content | regex_search('datadir\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_snapshot: "{{ bor_config_content | regex_search('snapshot\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        bor_ethstats: "{{ bor_config_content | regex_search('ethstats\\s*=\\s*\"([^\"]*)\"', '\\1') | default('Not found') }}"
+        bor_p2p_maxpeers: "{{ bor_config_content | regex_search('maxpeers\\s*=\\s*(\\d+)', '\\1') | default('Not found') }}"
+        bor_p2p_nodiscover: "{{ bor_config_content | regex_search('nodiscover\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        bor_p2p_bootnodes: "{{ bor_config_content | regex_search('bootnodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_p2p_static_nodes: "{{ bor_config_content | regex_search('static-nodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_p2p_trusted_nodes: "{{ bor_config_content | regex_search('trusted-nodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+
+    # Display extracted sentry config values
+    - name: Print Bor config values (sentry)
+      debug:
+        msg:
+          chain: "{{ bor_chain }}"
+          datadir: "{{ bor_datadir }}"
+          snapshot: "{{ bor_snapshot }}"
+          ethstats: "{{ bor_ethstats }}"
+          p2p.maxpeers: "{{ bor_p2p_maxpeers }}"
+          p2p.nodiscover: "{{ bor_p2p_nodiscover }}"
+          p2p.discovery.bootnodes: "{{ bor_p2p_bootnodes }}"
+          p2p.discovery.static-nodes: "{{ bor_p2p_static_nodes }}"
+          p2p.discovery.trusted-nodes: "{{ bor_p2p_trusted_nodes }}"
+
+  when: node_type == "sentry"
+
+# For validator node
+- block:
+
+    # Extract additional config values needed for validator nodes
+    - name: Extract Bor config values (validator)
+      set_fact:
+        bor_chain: "{{ bor_config_content | regex_search('chain\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_datadir: "{{ bor_config_content | regex_search('datadir\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_keystore: "{{ bor_config_content | regex_search('keystore\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_snapshot: "{{ bor_config_content | regex_search('snapshot\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        bor_ethstats: "{{ bor_config_content | regex_search('ethstats\\s*=\\s*\"([^\"]*)\"', '\\1') | default('Not found') }}"
+        bor_p2p_maxpeers: "{{ bor_config_content | regex_search('maxpeers\\s*=\\s*(\\d+)', '\\1') | default('Not found') }}"
+        bor_p2p_nodiscover: "{{ bor_config_content | regex_search('nodiscover\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        bor_p2p_bootnodes: "{{ bor_config_content | regex_search('bootnodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_p2p_static_nodes: "{{ bor_config_content | regex_search('static-nodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_p2p_trusted_nodes: "{{ bor_config_content | regex_search('trusted-nodes\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_p2p_dns: "{{ bor_config_content | regex_search('dns\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_heimdall_url: "{{ bor_config_content | regex_search('url\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_miner_mine: "{{ bor_config_content | regex_search('mine\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        bor_miner_etherbase: "{{ bor_config_content | regex_search('etherbase\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_jsonrpc_ipcpath: "{{ bor_config_content | regex_search('ipcpath\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_cache: "{{ bor_config_content | regex_search('cache\\s*=\\s*(\\d+)', '\\1') | default('Not found') }}"
+        bor_accounts_unlock: "{{ bor_config_content | regex_search('unlock\\s*=\\s*\\[([^\\]]+)\\]', '\\1') | default('Not found') }}"
+        bor_accounts_password: "{{ bor_config_content | regex_search('password\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        bor_accounts_allow_insecure_unlock: "{{ bor_config_content | regex_search('allow-insecure-unlock\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+
+    # Print the full parsed values for a validator node
+    - name: Print Bor config values (validator)
+      debug:
+        msg:
+          chain: "{{ bor_chain }}"
+          datadir: "{{ bor_datadir }}"
+          keystore: "{{ bor_keystore }}"
+          snapshot: "{{ bor_snapshot }}"
+          ethstats: "{{ bor_ethstats }}"
+          p2p.maxpeers: "{{ bor_p2p_maxpeers }}"
+          p2p.nodiscover: "{{ bor_p2p_nodiscover }}"
+          p2p.discovery.bootnodes: "{{ bor_p2p_bootnodes }}"
+          p2p.discovery.static-nodes: "{{ bor_p2p_static_nodes }}"
+          p2p.discovery.trusted-nodes: "{{ bor_p2p_trusted_nodes }}"
+          p2p.discovery.dns: "{{ bor_p2p_dns }}"
+          heimdall.url: "{{ bor_heimdall_url }}"
+          miner.mine: "{{ bor_miner_mine }}"
+          miner.etherbase: "{{ bor_miner_etherbase }}"
+          jsonrpc.ipcpath: "{{ bor_jsonrpc_ipcpath }}"
+          cache.cache: "{{ bor_cache }}"
+          accounts.unlock: "{{ bor_accounts_unlock }}"
+          accounts.password: "{{ bor_accounts_password }}"
+          accounts.allow-insecure-unlock: "{{ bor_accounts_allow_insecure_unlock }}"
+
+  when: node_type == "validator"

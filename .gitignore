@@ -2,6 +2,7 @@
 # Workspace / IDE specific settings (ignore local IDE config and metadata)
 # -----------------------------------------------------------------------------
 .workspace
+inventory.yml
 .idea
 **/.idea
 .vscode

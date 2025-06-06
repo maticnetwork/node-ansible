@@ -1,0 +1,6 @@
+# Install net-tools package to make sure 'netstat' command is available
+- name: Ensure netstat is installed
+  become: yes
+  package:
+    name: net-tools
+    state: present

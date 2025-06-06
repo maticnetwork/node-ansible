@@ -1,0 +1,11 @@
+# Fetch the most recent 100 lines of logs from bor
+- name: Get latest 100 lines of Bor logs
+  become: yes
+  command: journalctl -r --unit=bor.service --no-pager -n 100
+  register: bor_logs
+  ignore_errors: yes  # Don’t fail the playbook if the service doesn’t exist 
+
+# Output the logs to the console for quick visibility
+- name: Show Bor logs
+  debug:
+    var: bor_logs.stdout_lines

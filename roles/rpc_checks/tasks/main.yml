@@ -1,0 +1,22 @@
+# Query Bor's finalized block via local JSON-RPC endpoint
+- name: Query Bor finalized block
+  command: >
+    curl http://localhost:8545 -X POST --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["finalized", false],"id":1}' -H "Content-Type: application/json"
+  register: bor_rpc_output
+  ignore_errors: yes  # Allow the playbook to continue even if RPC is down
+
+# Print the finalized block data from RPC
+- name: Show Bor RPC output
+  debug:
+    var: bor_rpc_output.stdout
+
+# Query the latest checkpoint from Heimdall's REST API
+- name: Query Heimdall latest checkpoint
+  command: curl localhost:1317/checkpoints/latest
+  register: heimdall_rpc_output
+  ignore_errors: yes  # Heimdall may be inactive or API unavailable — don't fail
+
+# Print the checkpoint info received from Heimdall
+- name: Show Heimdall RPC output
+  debug:
+    var: heimdall_rpc_output.stdout

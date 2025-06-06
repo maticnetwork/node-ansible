@@ -6,12 +6,6 @@ Ansible playbooks to setup Matic validator node.
 
 Make sure you are using python3.x with Ansible. To check: `ansible --version` 
 
-### Setup
-
-Note: If your ssh public key (`~/.ssh/id_rsa.pub`) is already on the remote machines, skip this step.
-
-**Copy `pem` private key file as `.workspace/private.pem`** to enable ssh through ansible. If you don't have pem file, just make sure you can reach remote machines from your own machine using ssh (`ssh <username>@ip`). 
-
 ### Inventory
 
 Ansible manages hosts using `inventory.yml` file.
@@ -23,12 +17,9 @@ Add nodes ip's in `inventory.yml` as example
 Example:
 
 ```yml
-#add your instance ips here in palce of xx..
-xxx.xxx.xx.xx # <----- Add IP for sentry/validator node
-
-```
-
-Note: By default the user to login is setup as ubuntu in `group_vars/all` file. If you have a specific user to be logged in with please change the username in this file.
+   [all]
+   1.2.3.4 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
+   ```
 
 To check if nodes are reachable, run following commands:
 

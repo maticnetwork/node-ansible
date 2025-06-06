@@ -1,0 +1,4 @@
+# Show the OS version for the remote machine
+- name: Print OS version
+  debug:
+    msg: "The remote OS is {{ ansible_distribution }} {{ ansible_distribution_version }}"

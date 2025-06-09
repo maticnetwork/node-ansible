@@ -1,0 +1,20 @@
+---
+# Fix the ownership of the Heimdall data directory if it's not owned by the expected user
+- name: Fix Heimdall directory ownership if incorrect
+  command: "sudo chown -R {{ heimdall_user | default('heimdall') }}:nogroup {{ heimdall_path | default('/var/lib/heimdall') }}"
+  when: heimdall_data_status.stat.pw_name != (heimdall_user | default('heimdall'))
+  register: heimdall_fix_output
+  ignore_errors: yes  # Avoid failing the play if chown fails
+
+# Re-check the ownership of the Heimdall base directory
+- name: Re-check ownership after fix
+  stat:
+    path: "{{ heimdall_path | default('/var/lib/heimdall') }}"
+  register: heimdall_data_status_after
+  when: heimdall_data_status.stat.pw_name != (heimdall_user | default('heimdall'))
+
+# Print the updated ownership of the Heimdall base directory
+- name: Show updated ownership of Heimdall directory
+  debug:
+    msg: "Ownership is now {{ heimdall_data_status_after.stat.pw_name }}:{{ heimdall_data_status_after.stat.gr_name }}"
+  when: heimdall_data_status.stat.pw_name != (heimdall_user | default('heimdall'))

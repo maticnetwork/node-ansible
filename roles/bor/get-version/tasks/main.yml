@@ -1,7 +1,10 @@
-- name: get bor version
-  shell: 'bor version'
-  register: bor_output
+# Run the Bor binary to fetch the current version
+- name: Check Bor version
+  command: bor version
+  register: bor_version_result
+  ignore_errors: yes  # Don’t fail if the binary isn’t present
 
-- debug:
-    msg:
-      result: "{{ bor_output }}"
+# Print the Bor version if available, or error message
+- name: Print Bor version
+  debug:
+    msg: "{{ bor_version_result.stdout | default('Bor version check failed') }}"

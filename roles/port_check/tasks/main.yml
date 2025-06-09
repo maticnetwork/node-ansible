@@ -1,0 +1,22 @@
+# Check critical ports (26656, 30303)
+
+- name: Check if port 26656 is open (Heimdall P2P)
+  command: netstat -tunlp | grep ':26656'
+  register: port_26656
+  ignore_errors: true
+  changed_when: false
+
+- name: Check if port 30303 is open (Bor P2P)
+  command: netstat -tunlp | grep ':30303'
+  register: port_30303
+  ignore_errors: true
+  changed_when: false
+
+# Print each port's status in separate messages
+- name: Port 26656 status
+  debug:
+    msg: "Port 26656 (Heimdall P2P): {{ 'open' if port_26656.rc == 0 else 'closed or not detected' }}"
+
+- name: Port 30303 status
+  debug:
+    msg: "Port 30303 (Bor P2P): {{ 'open' if port_30303.rc == 0 else 'closed or not detected' }}"

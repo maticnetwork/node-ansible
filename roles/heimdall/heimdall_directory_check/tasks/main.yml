@@ -1,0 +1,11 @@
+---
+# Check if the Heimdall data directory exists
+- name: Check Heimdall data directory stats
+  stat:
+    path: "{{ heimdall_data_dir | default('/var/lib/heimdall/data') }}"
+  register: heimdall_data_status
+
+# Display the current owner and group of the Heimdall data directory
+- name: Print Heimdall directory ownership
+  debug:
+    msg: "Heimdall directory is owned by {{ heimdall_data_status.stat.pw_name }}:{{ heimdall_data_status.stat.gr_name }}"

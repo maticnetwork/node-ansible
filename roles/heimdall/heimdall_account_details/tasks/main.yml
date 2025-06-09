@@ -1,0 +1,15 @@
+# Only run this block if the node is a validator
+- block:
+
+    # Runs the Heimdall CLI command to display the current validator account info
+    - name: Show Heimdall account (validator only)
+      become: yes
+      command: heimdalld show-account
+      register: heimdall_account_output
+
+    # Print the output
+    - name: Display Heimdall account output
+      debug:
+        var: heimdall_account_output.stdout
+
+  when: node_type == "validator"

@@ -1,0 +1,11 @@
+# Fetch the latest 100 lines of logs from heimdalld
+- name: Get latest 100 lines of Heimdall logs
+  become: yes
+  command: journalctl -r --unit=heimdalld.service --no-pager -n 100
+  register: heimdall_logs
+  ignore_errors: yes  # Don’t fail if the service doesn’t exist
+
+# Display the log lines in output
+- name: Show Heimdall logs
+  debug:
+    var: heimdall_logs.stdout_lines

@@ -1,0 +1,64 @@
+---
+# Read and decode Heimdall config.toml using a default or overridden path
+- name: Read Heimdall config.toml file
+  become: yes
+  slurp:
+    src: "{{ heimdall_config_path | default('/var/lib/heimdall/config/config.toml') }}"
+  register: heimdall_config_file
+
+# Decode the config content from base64 to plain text
+- name: Decode Heimdall config.toml content
+  set_fact:
+    heimdall_config_content: "{{ heimdall_config_file.content | b64decode }}"
+
+# For sentry node
+- block:
+
+    - name: Extract Heimdall config values for sentry node
+      set_fact:
+        heimdall_moniker: "{{ heimdall_config_content | regex_search('moniker\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_external_address: "{{ heimdall_config_content | regex_search('external_address\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_seeds: "{{ heimdall_config_content | regex_search('seeds\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_persistent_peers: "{{ heimdall_config_content | regex_search('persistent_peers\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_pex: "{{ heimdall_config_content | regex_search('pex\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        heimdall_prometheus: "{{ heimdall_config_content | regex_search('prometheus\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        heimdall_max_open_connections: "{{ heimdall_config_content | regex_search('max_open_connections\\s*=\\s*(\\d+)', '\\1') | default('Not found') }}"
+
+    - name: Print Heimdall config values (sentry)
+      debug:
+        msg:
+          moniker: "{{ heimdall_moniker }}"
+          p2p.external_address: "{{ heimdall_external_address }}"
+          p2p.seeds: "{{ heimdall_seeds }}"
+          p2p.persistent_peers: "{{ heimdall_persistent_peers }}"
+          p2p.pex: "{{ heimdall_pex }}"
+          instrumentation.prometheus: "{{ heimdall_prometheus }}"
+          instrumentation.max_open_connections: "{{ heimdall_max_open_connections }}"
+
+  when: node_type == "sentry"
+
+# For validator node
+- block:
+
+    - name: Extract Heimdall config values for validator node
+      set_fact:
+        heimdall_moniker: "{{ heimdall_config_content | regex_search('moniker\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_external_address: "{{ heimdall_config_content | regex_search('external_address\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_seeds: "{{ heimdall_config_content | regex_search('seeds\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_persistent_peers: "{{ heimdall_config_content | regex_search('persistent_peers\\s*=\\s*\"([^\"]+)\"', '\\1') | default('Not found') }}"
+        heimdall_pex: "{{ heimdall_config_content | regex_search('pex\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        heimdall_prometheus: "{{ heimdall_config_content | regex_search('prometheus\\s*=\\s*(\\w+)', '\\1') | default('Not found') }}"
+        heimdall_max_open_connections: "{{ heimdall_config_content | regex_search('max_open_connections\\s*=\\s*(\\d+)', '\\1') | default('Not found') }}"
+
+    - name: Print Heimdall config values (validator)
+      debug:
+        msg:
+          moniker: "{{ heimdall_moniker }}"
+          p2p.external_address: "{{ heimdall_external_address }}"
+          p2p.seeds: "{{ heimdall_seeds }}"
+          p2p.persistent_peers: "{{ heimdall_persistent_peers }}"
+          p2p.pex: "{{ heimdall_pex }}"
+          instrumentation.prometheus: "{{ heimdall_prometheus }}"
+          instrumentation.max_open_connections: "{{ heimdall_max_open_connections }}"
+
+  when: node_type == "validator"

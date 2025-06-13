@@ -1,5 +1,7 @@
 # Polygon Node Snapshot Restore via Ansible
 
+## Note:- This ansible playbook is not meant for Docker. 
+
 This project provides an Ansible-based automation for restoring a Polygon node (bor or heimdall) using a pre-synced snapshot. It simplifies node setup, particularly for recovery or new deployments in cloud environments.
 
 ## Prerequisites
@@ -14,7 +16,7 @@ Before running the script, ensure you have the following:
 
 2. Local Code Editor
 
-- Use a local development environment like VS Code, Sublime, or JetBrains IDEs for editing and managing playbooks.
+- Use a local development environment like VS Code or JetBrains IDEs for editing and managing playbooks.
 
 3. Ansible Installed
 

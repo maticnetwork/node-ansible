@@ -34,9 +34,9 @@ Execute the following command, providing required variables:
 
 - service_name – either bor or heimdall
 
-- provider – cloud provider identifier (e.g., aws, gcp)
+- provider – cloud provider identifier (stakepool, vaultstaking, girnaartech)
 
-- network – network name (mainnet, testnet, etc.)
+- network – network name (mainnet, amoy)
 
 2. Monitor tmux Session on the Instance
 
@@ -46,7 +46,7 @@ The playbook uses tmux to perform snapshot restoration tasks asynchronously.
 
 To view the session:
 
-   `` ssh <user>@<instance-ip> ``\
+   `` ssh -i <ssh_key><user>@<instance-ip> ``\
    `` tmux ls ``
 
 3. Start the Services Manually

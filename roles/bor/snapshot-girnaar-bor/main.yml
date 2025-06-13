@@ -1,0 +1,74 @@
+# Girnaar bor snapshot(Only on amoy network) 
+
+- name: Ensure required packages are installed
+  ansible.builtin.package:
+    name: [ 'curl', 'tar', 'wget', 'aria2', 'tmux' ]
+    state: present
+
+# The bor services should be stopped
+- name: Stop Bor service
+  ansible.builtin.service:
+    name: bor
+    state: stopped
+
+# Make sure that chaindata is there before deleting
+- name: Check if Bor chaindata directory exists
+  ansible.builtin.stat:
+    path: /var/lib/bor/data/bor/
+  register: bor_chaindata_dir
+
+# Delete the chaindata directory
+- name: Remove existing Bor chaindata if present
+  ansible.builtin.file:
+    path: /var/lib/bor/data/bor/
+    state: absent
+  when: bor_chaindata_dir.stat.exists
+
+# Make sure bor group is in the node
+- name: Ensure bor group exists
+  ansible.builtin.group:
+    name: bor
+    state: present
+
+# Make sure the bor user is installed in the node. 
+- name: Ensure bor user exists
+  ansible.builtin.user:
+    name: bor
+    group: bor
+    shell: /bin/false
+    system: yes
+    create_home: no
+
+# Create a new chaindata directory
+- name: Create Bor chaindata directory
+  ansible.builtin.file:
+    path: /var/lib/bor/data/bor
+    state: directory
+    owner: bor
+    group: bor
+    mode: '0755'
+
+# create session if not already there
+- name: Ensure bor_sync tmux session exists
+  ansible.builtin.shell:
+    cmd: >
+      tmux has-session -t bor_sync 2>/dev/null || tmux new-session -d -s bor_sync
+    executable: /bin/bash
+
+# Download the snapshot file inside tmux
+- name: Queue snapshot-list download in tmux session
+  ansible.builtin.shell:
+    cmd: >
+      tmux send-keys -t bor_sync 'cd /var/lib/bor/data/bor/ && wget https://snapshots.girnaartech.com/polygon/{{ network }}-testnet/bor-{{ network }}-testnet-files.txt' C-m
+    executable: /bin/bash
+
+# After file is downloaded, start extracting the snapshot in the tmux.
+- name: Queue aria2c snapshot download in same tmux session
+  ansible.builtin.shell:
+    cmd: >
+      tmux send-keys -t bor_sync 'cd /var/lib/bor/data/bor/ && sudo aria2c -j 12 -x 12 --console-log-level=warn --auto-file-renaming=false --summary-interval=3600 -c -i ./bor-{{ network }}-testnet-files.txt' C-m
+    executable: /bin/bash
+
+# sudo chown -R bor:nogroup /var/lib/bor && sudo service bor start
+# Once the node started and working fine, make sure to kill the tmux session. To do that, use the below command:
+# tmux kill-session -t bor_sync

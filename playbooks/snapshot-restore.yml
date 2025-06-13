@@ -1,12 +1,29 @@
 ---
-# ansible-playbook -i inventory.yml playbooks/snapshot-restore.yml -e "network=$network client=$client"
-# Networks: mumbai and mainnet
-# clients: bor and heimdall. Technically you can use erigon but will be plugging that in soon enough.
+# Networks: amoy and mainnet
+# clients: bor and heimdall. 
 # On the host, you can find the screen session with the below command:
 # ps -ef | grep -i screen
 # each session is screen$client, snapbor, snapheimdall, etc.
-- name: snapshot restore
+# ansible-playbook -i inventory.yml playbooks/snapshot-restore.yml -e "service_name= { service_name } provider= { provider } network= { network }"
+
+- name: Sync Polygon Node from Snapshot
   hosts: all
-  become: true
+  become: yes
   roles:
-    - roles/snapshot-restore
+  - role: roles/heimdall/snapshot-vaultstaking-heimdall
+    when: service_name == 'heimdall' and provider == "vaultstaking"
+
+  - role: roles/bor/snapshot-vaultstaking-bor
+    when: service_name == 'bor' and provider == "vaultstaking"
+
+  - role: roles/heimdall/snapshot-girnaar-heimdall
+    when: service_name == 'heimdall' and provider == "girnaartech"
+
+  - role: roles/bor/snapshot-girnaar-bor
+    when: service_name == 'bor' and provider == "girnaartech"
+
+  - role: roles/heimdall/snapshot-stakepool-heimdall
+    when: service_name == 'heimdall' and provider == "stakepool"
+
+  - role: roles/bor/snapshot-stakepool-bor
+    when: service_name == 'bor' and provider == "stakepool"

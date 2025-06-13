@@ -1,0 +1,74 @@
+#Vaultstaking heimdall snapshot 
+
+# Make sure that the tools are installed
+- name: Ensure required packages are installed
+  ansible.builtin.package:
+    name: [ 'curl', 'tar', 'wget', 'aria2', 'tmux' ]
+    state: present
+
+# The heimdall services should be stopped
+- name: Stop Heimdall service
+  ansible.builtin.service:
+    name: heimdalld
+    state: stopped
+
+# Need to confirm if the data directory is available
+- name: Check if Heimdall data directory exists
+  ansible.builtin.stat:
+    path: /var/lib/heimdall/
+  register: heimdall_data_dir
+
+# Delete the entire data folder
+- name: Remove existing Heimdall data if present
+  ansible.builtin.file:
+    path: /var/lib/heimdall/
+    state: absent
+  when: heimdall_data_dir.stat.exists
+
+# Make sure that heimdall group and user is installed
+- name: Ensure heimdall group exists
+  ansible.builtin.group:
+    name: heimdall
+    state: present
+
+- name: Ensure heimdall user exists
+  ansible.builtin.user:
+    name: heimdall
+    group: heimdall
+    shell: /bin/false
+    system: yes
+    create_home: no
+
+# Need to create a new data folder
+- name: Create Heimdall data directory
+  ansible.builtin.file:
+    path: /var/lib/heimdall
+    state: directory
+    owner: heimdall
+    group: heimdall
+    mode: '0755'
+
+# create session if not already there
+- name: Ensure heimdall_sync tmux session exists
+  ansible.builtin.shell:
+    cmd: >
+      tmux has-session -t heimdall_sync 2>/dev/null || tmux new-session -d -s heimdall_sync
+    executable: /bin/bash
+
+# Download the snapshot file inside tmux
+- name: Queue snapshot-list download in tmux session
+  ansible.builtin.shell:
+    cmd: >
+      tmux send-keys -t heimdall_sync 'cd /var/lib/heimdall/ && wget https://snapshots.vaultstaking.com/polygon/heimdall-{{ network }}-files.txt' C-m
+    executable: /bin/bash
+
+# After file is downloaded, start extracting the snapshot in the tmux.
+- name: Queue aria2c snapshot download in same tmux session
+  ansible.builtin.shell:
+    cmd: >
+      tmux send-keys -t heimdall_sync 'cd /var/lib/heimdall/ && sudo aria2c -j 4 -x 4 --console-log-level=warn --auto-file-renaming=false --summary-interval=3600 -c -i ./heimdall-{{ network }}-files.txt' C-m
+    executable: /bin/bash
+
+# sudo chown -R heimdall:nogroup /var/lib/heimdall && sudo service heimdalld start
+# Once the node started and working fine, make sure to kill the tmux session. To do that, use the below command:
+# tmux kill-session -t heimdall_sync

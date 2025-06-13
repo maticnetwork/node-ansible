@@ -4,7 +4,7 @@
 # On the host, you can find the screen session with the below command:
 # ps -ef | grep -i screen
 # each session is screen$client, snapbor, snapheimdall, etc.
-# ansible-playbook -i inventory.yml playbooks/snapshot-restore.yml -e "service_name= { service_name } provider= { provider } network= { network }"
+# ansible-playbook -i inventory.yml playbooks/snapshot-restore/snapshot-restore.yml -e "service_name= { service_name } provider= { provider } network= { network }"
 
 - name: Sync Polygon Node from Snapshot
   hosts: all

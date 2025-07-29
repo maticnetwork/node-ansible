@@ -58,7 +58,7 @@
 # Chown dir for good measure
 - name: generating UTC file via heimdallcli on remote host
   expect:
-    command: "sudo heimdallcli generate-keystore {{ private_key }}"
+    command: "sudo heimdalld generate-keystore {{ private_key }}"
     responses:
       'Passphrase:': '{{ passphrase }}'
       'Repeat passphrase:': '{{ passphrase }}'

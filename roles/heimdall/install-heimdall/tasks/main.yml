@@ -2,7 +2,7 @@
 # tasks file for heimdall
 
 - name: install heimdall pacakges and heimdall profile
-  shell: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/heimdall.sh | bash -s -- {{ heimdall_version }} {{ network }} {{ node_type }}
+  shell: curl -L https://raw.githubusercontent.com/maticnetwork/install/heimdall-v2/heimdall-v2.sh | bash -s -- {{ heimdall_version }} {{ network }} {{ node_type }}
   become: true
 
 - name: update heimdall inbound peers
@@ -27,7 +27,7 @@
   ansible.builtin.lineinfile:
     path: /var/lib/heimdall/config/config.toml
     regexp: '^max_num_inbound_peers =.*$'
-    line: 'max_num_inbound_peers = 50'
+    line: 'max_num_inbound_peers = 100'
     backrefs: yes
   when: node_type == "validator"
   become: true
@@ -36,7 +36,7 @@
   ansible.builtin.lineinfile:
     path: /var/lib/heimdall/config/config.toml
     regexp: '^max_num_outbound_peers =.*$'
-    line: 'max_num_outbound_peers = 50'
+    line: 'max_num_outbound_peers = 100'
     backrefs: yes
   when: node_type == "validator"
   become: true

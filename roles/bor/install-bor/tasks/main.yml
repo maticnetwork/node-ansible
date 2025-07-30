@@ -2,7 +2,7 @@
 # tasks file for bor
 
 - name: install bor pacakges and bor profile
-  shell: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/bor.sh | bash -s -- {{ bor_version }} {{ network }} {{ node_type }}
+  shell: curl -L https://raw.githubusercontent.com/0xPolygon/install/main/bor.sh | bash -s -- {{ bor_version }} {{ network }} {{ node_type }}
   become: true
 
 - name: uncomment p2p discovery
